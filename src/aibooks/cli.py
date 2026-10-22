@@ -6,6 +6,7 @@ import sys
 from pathlib import Path
 
 from aibooks.pipeline import build_sudoku
+from aibooks.opportunities import evaluate_file
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -19,14 +20,21 @@ def main(argv: list[str] | None = None) -> int:
     sudoku.add_argument("--paper", choices=("white", "cream"), default="white")
     sudoku.add_argument("--out", type=Path, default=Path("output/sudoku-test"))
     sudoku.add_argument("--previews", action="store_true", help="Generate contact sheets for all pages (optional dependencies)")
+    evaluation = commands.add_parser("evaluate", help="Score evidence files without live data or sales promises")
+    evaluation.add_argument("--input", required=True, type=Path)
+    evaluation.add_argument("--out", type=Path)
     args = parser.parse_args(argv)
     try:
+        if args.command == "evaluate":
+            report = evaluate_file(args.input, args.out)
+            print(json.dumps(report, ensure_ascii=False, indent=2))
+            return 0
         if args.command == "sudoku":
             report = build_sudoku(args.out, args.title, args.count, args.seed, args.clues,
                                   previews=args.previews, paper=args.paper)
             print(json.dumps(report, ensure_ascii=False, indent=2))
             return 0
-    except (ValueError, FileExistsError, AssertionError, RuntimeError, OSError) as exc:
+    except (ValueError, KeyError, FileExistsError, AssertionError, RuntimeError, OSError, json.JSONDecodeError) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 1
     return 2

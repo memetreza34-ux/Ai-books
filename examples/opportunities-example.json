@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "ideas": [
+    {
+      "id": "beispiel-nur-schema",
+      "title": "Beispiel: Großdruck-Sudoku",
+      "rights_status": "unverified",
+      "risk_level": "low",
+      "scores": {
+        "demand": 5,
+        "reader_value": 8,
+        "differentiation": 6,
+        "evergreen": 9,
+        "profit_potential": 5,
+        "production_feasibility": 9,
+        "maintenance": 9
+      },
+      "evidence": []
+    }
+  ]
+}
