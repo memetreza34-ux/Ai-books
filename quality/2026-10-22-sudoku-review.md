@@ -22,3 +22,11 @@ Andere Seiten wurden **nicht** einzeln visuell abgenommen; eine vollständige Si
 
 ## Nächste Abnahme
 Nach dem nächsten grünen CI-Lauf neuen Artefakt herunterladen und Cover, Titelblatt, erste/mittlere/letzte Puzzle- und Lösungsseiten, Seite 40 sowie alle Kontaktbögen gegen diese Befunde prüfen. Festgestellte Fehler in `gehirn/10-FEHLER-UND-LEKTIONEN.md` dokumentieren.
+
+## Nachprüfung am neuen Artefakt
+- **GitHub Actions #39810381569**: Cover und Innenseite 1 erneut gerendert; Titelseite zeigt jetzt „Sudoku Testband“ statt Standardtitel.
+- **GitHub Actions #39810381569**: Innenseite 40 erneut gerendert; zusätzliche Notizseite hat jetzt vollständige Schreiblinien.
+- Automatischer Redaktionscheck im QA-Bericht: 28/28 Rätselüberschriften, 28/28 Lösungsüberschriften, korrekter Buchtitel und Mengenversprechen.
+- Die übrigen Seiten wurden weiterhin nicht vollständig einzeln manuell freigegeben; neuer Umschlag braucht offiziellen KDP-Calculator-Template-Abgleich.
+
+**Status:** korrigierte Teilprüfung bestanden, aber DRAFT, keine Veröffentlichung.

@@ -1,6 +1,6 @@
 # Aktueller Projektstatus
 
-**Stand: 2026-10-22; zuletzt bestätigter Build: GitHub Actions #39810381569 (20 Tests bestanden).**
+**Stand: 2026-10-22; zuletzt bestätigter Build: GitHub Actions #39810964648 (20 Tests + Basisinstallation bestanden).**
 
 ## Bestätigt und getestet
 - Dynamische Innen-/Covertitel und automatischer Abgleich von Titel, Rätselanzahl, Aufgaben- und Lösungsköpfen.
@@ -21,7 +21,7 @@
 1. Keine reale Nachfrage/Marktstudie, keine verifizierten Verkäufe.
 2. Noch keine autonome Live-Recherche, KI-API-Integration oder Multi-Agent-Orchestrierung.
 3. Noch keine qualitätsgeprüften und implementierten Generatoren für weitere neun Bucharten.
-4. Nur [visuelle Teilprüfung](../quality/2026-10-22-sudoku-review.md) am älteren Artefakt; noch keine vollständige visuelle Freigabe oder Probedruck.
+4. [Visuelle Teilprüfung und Nachkontrolle](../quality/2026-10-22-sudoku-review.md) an altem und korrigiertem Artefakt; keine vollständige visuelle Freigabe oder Probedruck.
 5. Kein Abgleich des Covers mit dem konkreten offiziellen KDP Cover Calculator Template, keine KDP-Preview und keine Amazon-Freigabe.
 6. Keine selbstständige Veröffentlichung, kein Werbekonto.
 7. Verlage/Pseudonyme/Mehrsprachigkeit/weitere Plattformen erst später.
@@ -33,4 +33,4 @@
 4. Weitere Generatoren nach belegtem Bedarf hinzufügen.
 5. Analyse realer Verkäufe, Verbesserungsprotokoll und sichere Skalierung.
 
-**Letzter bestätigter CI-Lauf vor diesem Dokumentations-Commit:** https://github.com/memetreza34-ux/Ai-books/actions/runs/39810381569
+**Letzter bestätigter CI-Lauf vor diesem Dokumentations-Commit:** https://github.com/memetreza34-ux/Ai-books/actions/runs/39810964648
