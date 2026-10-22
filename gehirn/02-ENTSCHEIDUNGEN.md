@@ -26,6 +26,10 @@ Die KI darf Vorschläge für Genres, Märkte, Sprachen, Altersgruppen, Formate, 
 - Verfügbarkeit verifizierbarer Verkaufs-/Keyword-Daten
 
 
+### Ergänzende Entscheidungen
+
+| ID | Datum | Entscheidung | Grund |
+| --- | --- | --- | --- |
 | D011 | 2026-10-22 | Print-Referenz 8.5×11 Zoll, B&W, weiß/creme; dynamisches Full-Wrap-Cover als DRAFT | Aktuelle KDP-Maße, kein Scheinkonformitätsanspruch |
 | D012 | 2026-10-22 | Maschinelle Font-/Seiten-/Textabstands-Prüfung als Gate | Druckfehler frühzeitig verhindern |
 | D013 | 2026-10-22 | Buchideen nur evidenzbasiert bewerten, niemals aus fehlenden Daten Verkäufe schätzen | Wirtschaftlichkeit und Qualität vor Massenproduktion |
