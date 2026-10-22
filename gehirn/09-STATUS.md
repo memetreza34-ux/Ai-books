@@ -3,7 +3,7 @@
 **Stand: 2026-10-22; Vorhaben Live-Katalogrecherche implementiert, aktueller CI-Nachweis siehe Actions.**
 
 ## Neu: Live-Katalogrecherche (Phase P3, Teil 1)
-- Offizielle Katalog-APIs Open Library + Google Books, maximal drei Themen pro Lauf, Quellenzeitstempel, Hash, Cache, Drosselung und sicheres Fehlermanagement.
+- Offizielle Katalog-APIs Open Library + Apple Books, maximal drei Themen pro Lauf, Quellenzeitstempel, Hash, Cache, Drosselung und sicheres Fehlermanagement.
 - CLI: `aibooks research --input examples/research-niches.json --out output/research-live.json`.
 - GitHub Actions: `Live Book Catalog Research` startet beim erstmaligen Hinzufügen der Workflow-Datei und später manuell per `Run workflow`.
 - **Keine Nachfrageschätzung**: Ergebnisse bleiben ausdrücklich `HOLD`.
@@ -41,3 +41,8 @@
 5. Analyse realer Verkäufe, Verbesserungsprotokoll und sichere Skalierung.
 
 **Letzter bestätigter CI-Lauf vor diesem Dokumentations-Commit:** https://github.com/memetreza34-ux/Ai-books/actions/runs/39810964648
+
+## API-Live-Test am 22.10.2026
+- Erste echte Recherche lieferte über Open Library verifizierbar abgerufene Katalogdatensätze, aber Google Books antwortete dreimal mit HTTP 429 (Rate Limit).
+- Dauerhafte Korrektur: Google ohne API-Key **nicht weiter abfragen**; Apple Books als zweiter öffentlicher Katalog, mit Schutz gegen wiederholte 429-Anfragen.
+- **Keine** aus Katalogzahlen abgeleiteten Verkaufs-/Nachfrageangaben. Apple-Preise gelten nur für E-Books, nicht KDP-Print.

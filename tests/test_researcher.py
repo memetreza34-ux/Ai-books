@@ -20,18 +20,18 @@ OL = {"numFound": 9000, "docs": [
      "first_publish_year": 2010, "edition_count": 2},
     {"key": "/works/OL12346W", "title": "Fremdes Kochbuch"},
 ]}
-GOOGLE = {"totalItems": 999, "items": [
-    {"id": "A2-xyZ", "volumeInfo": {"title": "Das Sudoku Buch",
-                                  "authors": ["Beispiel"], "pageCount": 200}},
-    {"id": "bad", "volumeInfo": {"title": "Pizza"}},
+APPLE = {"resultCount": 123, "results": [
+    {"trackName": "Das Sudoku Buch", "trackViewUrl": "https://books.apple.com/de/book/id12345",
+     "artistName": "Beispiel", "trackPrice": 4.99, "currency": "EUR"},
+    {"trackName": "Pizza", "trackViewUrl": "https://books.apple.com/de/book/id98765"}
 ]}
 
 
 def fetcher(url):
     if url.startswith("https://openlibrary.org/search.json?"):
         return OL
-    if url.startswith("https://www.googleapis.com/books/v1/volumes?"):
-        return GOOGLE
+    if url.startswith("https://itunes.apple.com/search?"):
+        return APPLE
     raise AssertionError("Unexpected source URL " + url)
 
 
@@ -49,7 +49,7 @@ def test_real_catalog_pipeline_does_not_claim_demand(tmp_path):
     assert idea["sources"][0]["catalog_total_reported"] == 9000
     assert idea["sources"][0]["sample_returned"] == 1
     assert idea["sources"][0]["examples"][0]["catalog_url"].endswith("OL12345W")
-    assert idea["sources"][1]["examples"][0]["catalog_url"].endswith("id=A2-xyZ")
+    assert idea["sources"][1]["examples"][0]["catalog_url"].endswith("id12345")
     assert idea["sources"][0]["request"]["sha256"]
     with pytest.raises(FileExistsError):
         research_file(inp, out, tmp_path / "cache", fetcher=fetcher, now=NOW)
@@ -70,10 +70,10 @@ def test_cache_reuses_results_without_hidden_calls(tmp_path):
 
 def test_old_cache_refetched(tmp_path):
     old = CatalogClient(tmp_path / "cache", fetcher=fetcher, now=NOW - timedelta(days=9))
-    old.get("google_books", "Sudoku Großdruck", "de")
+    old.get("apple_books", "Sudoku Großdruck", "de")
     calls = []
-    new = CatalogClient(tmp_path / "cache", fetcher=lambda u: (calls.append(u) or GOOGLE), now=NOW)
-    _, provenance = new.get("google_books", "Sudoku Großdruck", "de")
+    new = CatalogClient(tmp_path / "cache", fetcher=lambda u: (calls.append(u) or APPLE), now=NOW)
+    _, provenance = new.get("apple_books", "Sudoku Großdruck", "de")
     assert len(calls) == 1 and not provenance["from_cache"]
 
 
@@ -81,7 +81,7 @@ def test_provider_error_isolated_and_hold(tmp_path):
     def partial(url):
         if "openlibrary" in url:
             raise TimeoutError("timeout")
-        return GOOGLE
+        return APPLE
     client = CatalogClient(tmp_path / "cache", fetcher=partial, now=NOW)
     result = research_ideas(IDEAS["ideas"], client)["ideas"][0]
     assert result["catalog_sources_ok"] == 1
@@ -118,7 +118,7 @@ def test_stale_and_malformed_payload_hold(tmp_path):
 
 def test_official_api_query_params():
     ol = _api_url("openlibrary", "Sudoku Großdruck", "de")
-    google = _api_url("google_books", "Sudoku Großdruck", "de")
+    google = _api_url("apple_books", "Sudoku Großdruck", "de")
     assert "fields=" in ol and "limit=10" in ol
-    assert "langRestrict=de" in google and "maxResults=10" in google
+    assert "country=DE" in google and "limit=10" in google
     assert "https://" in ol

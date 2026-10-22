@@ -18,7 +18,7 @@ import time
 
 SOURCES = {
     "openlibrary": "https://openlibrary.org/search.json",
-    "google_books": "https://www.googleapis.com/books/v1/volumes",
+    "apple_books": "https://itunes.apple.com/search",
 }
 MAX_IDEAS = 3
 MAX_RESULTS = 10
@@ -34,7 +34,7 @@ class ResearchError(ValueError):
 def read_ideas(path: Path) -> list[dict]:
     data = json.loads(path.read_text(encoding="utf-8"))
     ideas = data.get("ideas") if isinstance(data, dict) else None
-    if data.get("schema_version") != 1 or not isinstance(ideas, list):
+    if not isinstance(data, dict) or data.get("schema_version") != 1 or not isinstance(ideas, list):
         raise ResearchError("Expected schema_version 1 with ideas array")
     if not 1 <= len(ideas) <= MAX_IDEAS:
         raise ResearchError(f"Provide between 1 and {MAX_IDEAS} research ideas")
@@ -74,10 +74,10 @@ def _api_url(source: str, query: str, language: str) -> str:
     if source == "openlibrary":
         params = {"title": query, "lang": language,
                   "limit": str(MAX_RESULTS), "fields": "key,title,author_name,first_publish_year,edition_count,language"}
-    elif source == "google_books":
-        params = {"q": "intitle:" + query, "langRestrict": language,
-                  "maxResults": str(MAX_RESULTS), "printType": "books",
-                  "projection": "lite"}
+    elif source == "apple_books":
+        countries = {"de": "DE", "en": "US", "es": "ES", "fr": "FR", "it": "IT", "nl": "NL"}
+        params = {"term": query, "country": countries[language], "media": "ebook",
+                  "entity": "ebook", "limit": str(MAX_RESULTS), "explicit": "No"}
     else:
         raise ResearchError("Unknown data source")
     return SOURCES[source] + "?" + urlencode(params)
@@ -127,7 +127,9 @@ class CatalogClient:
             try:
                 value = json.loads(cache.read_text(encoding="utf-8"))
                 stamp = datetime.fromisoformat(value["retrieved_at"])
-                if stamp.tzinfo and timedelta(0) <= self.now - stamp <= timedelta(days=CACHE_DAYS):
+                cached = json.dumps(value["payload"], ensure_ascii=False, sort_keys=True).encode("utf-8")
+                if (stamp.tzinfo and timedelta(0) <= self.now - stamp <= timedelta(days=CACHE_DAYS)
+                    and sha256(cached).hexdigest() == value["sha256"]):
                     return value["payload"], {"url": url, "retrieved_at": value["retrieved_at"],
                                                "from_cache": True, "sha256": value["sha256"]}
             except (OSError, ValueError, KeyError, TypeError):
@@ -189,41 +191,50 @@ def _openlibrary_results(data: dict, terms: list[str]) -> tuple[list, int | None
     return examples, count if type(count) is int and count >= 0 else None
 
 
-def _google_results(data: dict, terms: list[str]) -> tuple[list, int | None]:
-    docs = data.get("items", [])
+def _apple_results(data: dict, terms: list[str]) -> tuple[list, int | None]:
+    docs = data.get("results", [])
     if not isinstance(docs, list):
-        raise ResearchError("Google Books malformed items")
+        raise ResearchError("Apple Books malformed results")
     examples, visited = [], set()
-    for d in docs[:MAX_RESULTS]:
-        if not isinstance(d, dict):
+    for book in docs[:MAX_RESULTS]:
+        if not isinstance(book, dict):
             continue
-        book = d.get("volumeInfo", {})
-        if not isinstance(book, dict) or not isinstance(book.get("title"), str):
+        title, link = book.get("trackName"), book.get("trackViewUrl")
+        if not isinstance(title, str) or not _matching(title, terms):
             continue
-        title = book["title"].strip()
-        code = d.get("id")
-        if (not _matching(title, terms) or not isinstance(code, str)
-            or not 1 <= len(code) <= 80 or any(not(c.isalnum() or c in "_-") for c in code)
-            or code in visited):
+        if not isinstance(link, str):
             continue
-        visited.add(code)
-        authors = book.get("authors")
+        address = urlsplit(link)
+        if address.scheme != "https" or address.hostname not in {"books.apple.com", "itunes.apple.com"}:
+            continue
+        if link in visited:
+            continue
+        visited.add(link)
+        price = book.get("trackPrice")
         examples.append({
-            "title": title, "authors": [str(x) for x in authors[:3]] if isinstance(authors, list) else [],
-            "published_date": book.get("publishedDate") if isinstance(book.get("publishedDate"), str) else None,
-            "page_count": book.get("pageCount") if type(book.get("pageCount")) is int else None,
-            "catalog_url": "https://books.google.com/books?id=" + code,
-            "kind": "catalog_record_not_a_verified_live_store_offer"
+            "title": title.strip(),
+            "authors": [str(book["artistName"])] if isinstance(book.get("artistName"), str) else [],
+            "published_date": book.get("releaseDate") if isinstance(book.get("releaseDate"), str) else None,
+            "ebook_price": price if type(price) in (int, float) and price >= 0 else None,
+            "currency": book.get("currency") if isinstance(book.get("currency"), str) else None,
+            "catalog_url": link,
+            "kind": "apple_ebooks_store_record_not_sold_units_or_paperback"
         })
-    count = data.get("totalItems")
+    count = data.get("resultCount")
     return examples, count if type(count) is int and count >= 0 else None
 
 
 def research_ideas(ideas: list[dict], client: CatalogClient) -> dict:
     output = []
+    rate_limited = set()
     for idea in ideas:
         sources = []
-        for source, parse in (("openlibrary", _openlibrary_results), ("google_books", _google_results)):
+        for source, parse in (("openlibrary", _openlibrary_results), ("apple_books", _apple_results)):
+            if source in rate_limited:
+                sources.append({"source": source, "status": "skipped_rate_limit",
+                                "error": "Previous request returned HTTP 403/429; further calls avoided",
+                                "examples": []})
+                continue
             try:
                 payload, provenance = client.get(source, idea["query"], idea.get("language", "de"))
                 records, reported_count = parse(payload, idea["title_must_contain"])
@@ -234,6 +245,8 @@ def research_ideas(ideas: list[dict], client: CatalogClient) -> dict:
                     "disclaimer": "Catalog results are not sales, search volume, or current store availability."
                 })
             except (ResearchError, OSError, HTTPError, URLError, TimeoutError, ValueError, KeyError) as exc:
+                if isinstance(exc, HTTPError) and exc.code in (403, 429):
+                    rate_limited.add(source)
                 sources.append({"source": source, "status": "error",
                                 "error": type(exc).__name__ + ": " + str(exc)[:250],
                                 "examples": []})

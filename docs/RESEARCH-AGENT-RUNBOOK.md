@@ -27,8 +27,10 @@ Referenz: [Sudoku-Marktprüfung Oktober 2026](../research/2026-10-22-sudoku-de.m
 
 
 ## Ausführbarer Agent (erstes Online-Modul; 22.10.2026)
-`aibooks research --input examples/research-niches.json --out output/research-live.json` kann Open Library und Google Books mit **echten** Katalog-API-Anfragen recherchieren, drei Nischen vergleichen, Quellen-URLs und Abrufzeiten aufzeichnen, Treffer nach Titelbegriffen filtern sowie Ausfälle/Cache behandeln.
+`aibooks research --input examples/research-niches.json --out output/research-live.json` kann Open Library und Apple Books mit **echten** Katalog-API-Anfragen recherchieren, drei Nischen vergleichen, Quellen-URLs und Abrufzeiten aufzeichnen, Treffer nach Titelbegriffen filtern sowie Ausfälle/Cache behandeln.
 
 **Wichtig:** Dieser Kataloglauf liefert **keine** aktuellen Händlerpreise, Nachfrage-, Absatz- oder Profitabilitätsdaten. Er übergibt bewusst keine generierten Nachfragebelege an den Offline-Scorer. Bis weitere unabhängige Daten vorliegen, lautet die Entscheidung für jede Nische `HOLD`.
 
 [Live-Recherche-Anleitung](LIVE-RESEARCH.md). GitHub Actions erlaubt manuelle Ausführung und speichert das Ergebnis als Artefakt. Kein Dauerbetrieb, keine ungefragten kostenpflichtigen APIs.
+
+**2026-10-22, Quellen-Fallback:** Google Books antwortete im ersten Live-Lauf mit HTTP 429; daher auf Apple Books Store Search API für E-Book-Wettbewerb umgestellt. Beide Plattformen sind für Verkäufe nur **indirekte** Anhaltspunkte. Keine ungeprüfte Druckpreis-Übernahme.

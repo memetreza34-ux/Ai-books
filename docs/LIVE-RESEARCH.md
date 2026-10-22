@@ -4,7 +4,7 @@ Der Recherche-Agent kann **echte Buchkatalog-Daten über offizielle öffentliche
 
 ## Quellen und Grenzen
 - [Open Library Search API](https://openlibrary.org/dev/docs/api/search): Werke, Titel, ggf. Erstveröffentlichungsjahr, Editionen. Die `lang`-Angabe bevorzugt Deutsch, garantiert es aber nicht.
-- [Google Books Volumes API](https://developers.google.com/books/docs/v1/reference/volumes/list): Titel, Autor, ggf. Seitenzahl, Publikationsdatum. Die Beschränkung `langRestrict=de` ist nicht gleichbedeutend mit einer Überprüfung jedes Eintrags.
+- [Apple Books Search API](https://performance-partners.apple.com/search-api): Titel, Autor, ggf. E-Book-Preis und Erscheinungsdatum. Apple liefert **E-Books**, keine Amazon-KDP-Taschenbuchangebote; Preise dürfen nicht als Taschenbuchpreise verwendet werden.
 - **Keine Kaufzahlen, kein Suchvolumen, keine KDP-Verkaufsschätzung, keine Store-Preise.** Ein Katalogtreffer ist kein lieferbares Kaufangebot. Die kataloginterne Gesamtzahl ist **keine** aktuelle Konkurrenz- oder Absatzmenge.
 - Pro Lauf höchstens drei Nischen, je eine Anfrage pro Anbieter. Kein HTML-Scraping, keine ungeprüften Download-Links. Keine externen KI-API-Kosten.
 

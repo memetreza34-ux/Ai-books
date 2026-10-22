@@ -5,6 +5,7 @@ on:
   push:
     paths:
       - .github/workflows/live-research.yml
+      - src/aibooks/researcher.py
 
 permissions:
   contents: read
