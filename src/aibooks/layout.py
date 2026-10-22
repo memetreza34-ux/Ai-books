@@ -177,6 +177,9 @@ def interior_pdf(path: Path, title: str, items: list[dict]) -> int:
     if page % 2:
         page += 1
         heading(c, "Weitere Notizen", page, regular, bold)
+        c.setStrokeColor(HexColor("#CAD5DF"))
+        for y in range(665, 95, -28):
+            c.line(65, y, PAGE_W - 65, y)
         page_done(c)
     c.save()
     return page
