@@ -16,6 +16,10 @@ jobs:
         run: python -m pytest
       - name: Build sample draft book
         run: python -m aibooks sudoku --title "Sudoku Testband" --count 28 --seed 20261022 --clues 38 --previews --out output/github-sample
+      - name: Score synthetic opportunity example (must remain HOLD)
+        run: |
+          python -m aibooks evaluate --input examples/opportunities-example.json --out output/github-sample/opportunity-UNVERIFIED.json
+          python -c "import json; p=json.load(open('output/github-sample/opportunity-UNVERIFIED.json')); assert p['recommendations'][0]['status']=='HOLD'"
       - name: Upload sample draft and full-page previews
         uses: actions/upload-artifact@v4
         with:
