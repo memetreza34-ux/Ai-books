@@ -28,3 +28,7 @@ Alle Nischen bleiben `HOLD`, auch wenn Daten von beiden Quellen erfolgreich eing
 
 ## Stabilität/Sicherheit
 Abfragezeitbegrenzung, begrenzte Datenmenge, Domain-Allowlist, Open-Library-Drosselung, Cache und Tests mit künstlichen Antworten. Der aktuelle Agent ist eine **autonom laufende Quellenabfrage**, kein vollständiger KI-basierter Browser-Agent und ersetzt keine menschliche Markteinschätzung.
+
+
+## Bestätigter Referenzlauf (22.10.2026)
+GitHub Actions [#39813832909](https://github.com/memetreza34-ux/Ai-books/actions/runs/39813832909): Open Library + Apple Books beide erreichbar. Vollbericht als Workflow-Artefakt. Dauerhafte [Auswertung](../research/2026-10-22-live-catalog-de.md) im Repository; Katalogtreffer **keine** Kauf-/Verkaufszahlen.

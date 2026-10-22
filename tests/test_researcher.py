@@ -122,3 +122,36 @@ def test_official_api_query_params():
     assert "fields=" in ol and "limit=10" in ol
     assert "country=DE" in google and "limit=10" in google
     assert "https://" in ol
+
+
+def test_provider_rate_limit_stops_subsequent_calls(tmp_path):
+    from urllib.error import HTTPError
+    calls = []
+    def fake(url):
+        calls.append(url)
+        if "itunes.apple.com" in url:
+            raise HTTPError(url, 429, "Too Many Requests", hdrs=None, fp=None)
+        return OL
+    two = [dict(IDEAS["ideas"][0], id="first"),
+           dict(IDEAS["ideas"][0], id="second")]
+    client = CatalogClient(tmp_path / "cache", fetcher=fake, now=NOW)
+    report = research_ideas(two, client)
+    assert [r["decision"] for r in report["ideas"]] == ["HOLD", "HOLD"]
+    assert len([x for x in calls if "itunes.apple.com" in x]) == 1
+    assert report["ideas"][0]["sources"][1]["status"] == "error"
+    assert report["ideas"][1]["sources"][1]["status"] == "skipped_rate_limit"
+
+
+def test_tampered_cache_is_not_trusted(tmp_path):
+    client = CatalogClient(tmp_path / "cache", fetcher=fetcher, now=NOW)
+    client.get("apple_books", "Sudoku Großdruck", "de")
+    cache = next((tmp_path / "cache").glob("*.json"))
+    record = json.loads(cache.read_text(encoding="utf-8"))
+    record["payload"]["resultCount"] = 999999
+    cache.write_text(json.dumps(record), encoding="utf-8")
+    refreshed = []
+    again = CatalogClient(tmp_path / "cache",
+                          fetcher=lambda url: (refreshed.append(url) or APPLE), now=NOW)
+    body, meta = again.get("apple_books", "Sudoku Großdruck", "de")
+    assert refreshed and body["resultCount"] == APPLE["resultCount"]
+    assert not meta["from_cache"]

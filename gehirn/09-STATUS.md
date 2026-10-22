@@ -46,3 +46,11 @@
 - Erste echte Recherche lieferte über Open Library verifizierbar abgerufene Katalogdatensätze, aber Google Books antwortete dreimal mit HTTP 429 (Rate Limit).
 - Dauerhafte Korrektur: Google ohne API-Key **nicht weiter abfragen**; Apple Books als zweiter öffentlicher Katalog, mit Schutz gegen wiederholte 429-Anfragen.
 - **Keine** aus Katalogzahlen abgeleiteten Verkaufs-/Nachfrageangaben. Apple-Preise gelten nur für E-Books, nicht KDP-Print.
+
+
+## Erfolgreiche API-Recherche nach Anbieterwechsel (22.10.2026)
+- [Workflow #39813832909](https://github.com/memetreza34-ux/Ai-books/actions/runs/39813832909) lief erfolgreich mit Open Library **und** Apple Books.
+- Sudoku Großdruck: 10 passende Katalogdatensätze; Mathe Grundschule: 4; Kinder-Labyrinthe: 7. **Keine** Rangfolge nach Kaufnachfrage möglich.
+- [Persistenter Kurzbericht](../research/2026-10-22-live-catalog-de.md) angelegt. Vollständiger Quellen-JSON-Bericht liegt im Workflow-Artefakt.
+- [CI #39813832724](https://github.com/memetreza34-ux/Ai-books/actions/runs/39813832724): **32 Tests bestanden**, Buchproduktion und minimale Installation ebenfalls erfolgreich.
+- Weitere Belege zu realer Nachfrage, Preisen und Buchqualität fehlen weiterhin. Kein GO.

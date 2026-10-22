@@ -45,3 +45,11 @@ ID / Datum / Buchtyp / Symptom / Schritte / Ursache / Schwere / Korrektur / Test
 - Bibliografische Suchtreffer dürfen niemals als tatsächliche Verkäufe, aktuelle Shop-Verfügbarkeit, Kundeninteresse oder Profitabilität interpretiert werden.
 - Deshalb automatische Entscheidung immer `HOLD`, inklusive Quellenstatus, Zeitstempel, Query, Filter und Rückmeldungen fehlgeschlagener Anbieter.
 - Alle Provider-Zugriffe sind auf zwei feste APIs eingeschränkt. Keine HTML-Scraper oder Anbindung an KDP-Konten.
+
+
+## 2026-10-22 – Google Books HTTP 429 in echtem API-Lauf
+- Symptom: Alle drei Google Books-Kataloganfragen lieferten HTTP 429 (Rate Limit), Open Library hingegen funktionierte.
+- Ursache: kostenloser anonymer API-Zugang nicht zuverlässig, möglicherweise auch durch geteilte Runner-IP.
+- Korrektur: Google Books durch die offizielle Apple Books Search API ersetzt; Schutzmechanismus stoppt Folgeanfragen nach HTTP 403/429.
+- Nachweis: Workflow #39813832909, beide neuen Katalogquellen antworteten erfolgreich.
+- Erkenntnis: Bibliografische Treffer sind keine Verkaufsmengen und keine Nachfrageindikatoren. Providerfehler dürfen nicht als 0 Marktangebot interpretiert werden.
