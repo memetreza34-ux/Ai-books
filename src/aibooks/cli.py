@@ -2,11 +2,13 @@
 from __future__ import annotations
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 
 from aibooks.pipeline import build_sudoku
 from aibooks.opportunities import evaluate_file
+from aibooks.researcher import research_file
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -23,8 +25,25 @@ def main(argv: list[str] | None = None) -> int:
     evaluation = commands.add_parser("evaluate", help="Score evidence files without live data or sales promises")
     evaluation.add_argument("--input", required=True, type=Path)
     evaluation.add_argument("--out", type=Path)
+    research = commands.add_parser("research", help="Fetch small, live book catalog samples; NOT sales or verified demand")
+    research.add_argument("--input", required=True, type=Path)
+    research.add_argument("--out", required=True, type=Path)
+    research.add_argument("--cache-dir", type=Path, default=Path("output/catalog-cache"))
     args = parser.parse_args(argv)
     try:
+        if args.command == "research":
+            report = research_file(args.input, args.out, args.cache_dir,
+                                   contact=os.getenv("AIBOOKS_CONTACT_EMAIL", ""))
+            print(json.dumps({
+                "output": str(args.out),
+                "generated_at": report["generated_at"],
+                "ideas": [{"id": item["id"], "status": item["decision"],
+                           "sources_ok": item["catalog_sources_ok"],
+                           "catalog_examples": item["catalog_examples"]}
+                          for item in report["ideas"]],
+                "sales_or_demand_claimed": False
+            }, ensure_ascii=False, indent=2))
+            return 0
         if args.command == "evaluate":
             report = evaluate_file(args.input, args.out)
             print(json.dumps(report, ensure_ascii=False, indent=2))

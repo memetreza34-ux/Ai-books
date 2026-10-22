@@ -10,6 +10,7 @@ Lies [AGENTS.md](AGENTS.md), [gehirn/00-START-HIER.md](gehirn/00-START-HIER.md) 
 - **Innen-PDF:** 8.5 × 11 Zoll, ohne Innen-Beschnitt, mit Lösungsseiten und optionalen Vorschauübersichten.
 - **Vollumschlag-PDF (Entwurf):** Rückseite + Buchrücken + Vorderseite mit KDP-Formel für weißes oder cremefarbenes Papier, Cover-Beschnitt und freigehaltenem Barcodebereich.
 - **Maschinelle Druckprüfung:** Seitengrößen, Seitenanzahl, tatsächliche Umschlagbreite, eingebettete verwendete Schriftarten und Text-Sicherheitsabstände.
+- **Live-Katalogrecherche:** Offizielle Open-Library- und Google-Books-APIs werden nur auf ausdrücklichen Befehl abgefragt; 3 Nischen, begrenzte Anfragen, Zeitstempel/Quell-URLs/Cache/Fehlerdiagnose. Liefert **keine Kaufzahlen und keine belegte Nachfrage**. [Anleitung](docs/LIVE-RESEARCH.md).
 - **Ideenbewertung:** Gewichtet Nachfrage, Lesermehrwert, Originalität/Differenzierung, Evergreen, mögliche Marge und Umsetzbarkeit. Ohne aktuelle belegte Marktdaten bleibt eine Idee `HOLD`.
 - **Gehirn:** Ziele, Architektur, zehn Bucharten, rechtliche Kontrollpunkte, Entscheidungen, offene Risiken, Roadmap und Fehlergedächtnis.
 - **CI:** 17 Python-Tests plus reproduzierbarer Beispielbuchlauf; Test-PDFs in GitHub-Actions-Artefakten.
@@ -24,6 +25,7 @@ python -m pip install -e '.[dev,preview]'
 python -m pytest
 aibooks sudoku --title "Sudoku Testband" --count 28 --clues 38 --paper white --seed 20261022 --previews --out output/sudoku-test
 aibooks evaluate --input examples/opportunities-example.json --out output/research-example.json
+aibooks research --input examples/research-niches.json --out output/research-live.json
 ```
 
 **Beachte:** `output/` ist in Git ignoriert. Bereits gefüllte Zielordner bzw. vorhandene Berichte werden nicht überschrieben.
@@ -36,6 +38,7 @@ aibooks evaluate --input examples/opportunities-example.json --out output/resear
 - `manifest.json`: Seed, Seitenzahl, Papierprofil, Hashwerte, Dateigrößen
 - `previews/contact-sheet-*.png`: alle Seiten als Übersicht (optional)
 - `output/research-example.json`: vorsichtige Bewertung von **synthetischen** Beispieldaten
+- `output/research-live.json`: begrenzte **echte Katalogdaten** mit klarer Trennung von Konkurrenzindikatoren und Nachfrage
 
 ## Wichtige Grenzen
 Dieses System erstellt aktuell **technisch vorgeprüfte ENTWÜRFE**, keine von Amazon genehmigten Bücher. Vor der echten Veröffentlichung fehlen insbesondere visuelle Vollkontrolle, Abgleich mit dem offiziellen Cover Calculator, KDP Previewer, Probedruck, Rechteprüfung, echte Marktrecherche, professionelle Produktentscheidung und deine ausdrückliche Freigabe. **Kein automatischer Upload, keine Werbeausgaben, keine Gewinnversprechen.**

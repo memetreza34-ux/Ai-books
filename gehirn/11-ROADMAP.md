@@ -38,3 +38,10 @@ Import echter Verkaufsberichte, Deckungsbeiträge, Lager/Versionen, Preis-/Cover
 - Aktuelle Sudoku-Konkurrenzangebote aus Thalia/Hugendubel dokumentiert; **kommerzieller Status HOLD**.
 - Researcher-Runbook ergänzt; echte autonome Webrecherche weiterhin NICHT implementiert.
 - Nächste Abnahme: neues Artefakt optisch überprüfen, KDP-Vorlage/Previewer und echte Nachfrageindikatoren.
+
+
+## 22.10.2026 – P3 Fortschritt: autonome Katalogabfrage
+- Python-Recherchelauf mit zwei **öffentlichen Katalogquellen**, überprüfbaren Request-URLs, Abrufzeit, SHA256 und übersichtlicher Trefferliste implementiert.
+- Offen dokumentierte Einschränkungen: Keine Verkäufe, keine Suche nach tatsächlichen KDP-Händlerpreisen und keine Nachfragemetriken.
+- GitHub-Actions-Workflow als manuell startbare Recherche. Keine automatische tägliche Überwachung oder kostenpflichtige API.
+- Nächste P3-Stufe: unabhängig belastbare Nachfrageindizien, Händler- und Druckkostenbelege, echte qualitative Differenzierung sowie geprüfte Übergabe zum `evaluate`-Scorer.

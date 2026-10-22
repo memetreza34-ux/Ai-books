@@ -34,3 +34,10 @@ Die KI darf Vorschläge für Genres, Märkte, Sprachen, Altersgruppen, Formate, 
 | D012 | 2026-10-22 | Maschinelle Font-/Seiten-/Textabstands-Prüfung als Gate | Druckfehler frühzeitig verhindern |
 | D013 | 2026-10-22 | Buchideen nur evidenzbasiert bewerten, niemals aus fehlenden Daten Verkäufe schätzen | Wirtschaftlichkeit und Qualität vor Massenproduktion |
 | D014 | 2026-10-22 | Automatischer Score kann nur menschliche Prüfung empfehlen | Mensch entscheidet Veröffentlichung und Ausgaben |
+
+
+### ADR D015 – 22.10.2026: Nur offizielle katalogbasierte Live-Recherche als erste autonome Quelle
+- **Kontext:** Die bisherigen manuell gepflegten Evidenzen im Scorer konnten als aktuell erscheinen, ohne dass URLs gelesen wurden.
+- **Entscheidung:** Eigener `research`-Befehl mit zwei offiziell dokumentierten Katalog-APIs, drei Ideen pro Lauf, Quellnachweisen, Cache, Fehlersperren und strikt unverändertem `HOLD`.
+- **Nicht-Ziel:** Automatische Umsatz- oder Suchvolumenprognosen, Scraping von Shops, unbeaufsichtigte kostenpflichtige Recherchen.
+- **Folge:** Recherche-Lauf und Scorer bleiben getrennt, bis Nachfragebelege qualitätsgesichert sind.

@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "ideas": [
+    {
+      "id": "sudoku-grossdruck",
+      "query": "Sudoku Großdruck",
+      "language": "de",
+      "title_must_contain": ["sudoku"]
+    },
+    {
+      "id": "mathe-grundschule",
+      "query": "Mathe Übungsbuch Grundschule",
+      "language": "de",
+      "title_must_contain": ["mathe", "mathematik"]
+    },
+    {
+      "id": "kinder-labyrinthe",
+      "query": "Labyrinthe Kinder Rätselbuch",
+      "language": "de",
+      "title_must_contain": ["labyrinth", "labyrinthe"]
+    }
+  ]
+}

@@ -39,3 +39,9 @@ ID / Datum / Buchtyp / Symptom / Schritte / Ursache / Schwere / Korrektur / Test
 - **Symptom:** PDF-Prüfer und Editorialmodul verwenden PyMuPDF; Paket war nur im Preview-Extra gelistet.
 - **Fix:** PyMuPDF als erforderliche Abhängigkeit festgelegt; separater CI-Basisinstallations-Smoke-Test.
 - **Lehre:** CI muss nicht nur mit sämtlichen Extras, sondern auch mit dokumentierter Minimalinstallation laufen.
+
+
+## 2026-10-22 – Präventive Schutzmaßnahme: Katalogtreffer sind keine Nachfrage
+- Bibliografische Suchtreffer dürfen niemals als tatsächliche Verkäufe, aktuelle Shop-Verfügbarkeit, Kundeninteresse oder Profitabilität interpretiert werden.
+- Deshalb automatische Entscheidung immer `HOLD`, inklusive Quellenstatus, Zeitstempel, Query, Filter und Rückmeldungen fehlgeschlagener Anbieter.
+- Alle Provider-Zugriffe sind auf zwei feste APIs eingeschränkt. Keine HTML-Scraper oder Anbindung an KDP-Konten.

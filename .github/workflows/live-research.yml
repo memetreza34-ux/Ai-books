@@ -1,0 +1,36 @@
+name: Live Book Catalog Research
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/live-research.yml
+
+permissions:
+  contents: read
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install lightweight research package
+        run: python -m pip install -e .
+      - name: Fetch public catalog metadata for three book ideas
+        run: |
+          python -m aibooks research             --input examples/research-niches.json             --out output/live-research/report.json             --cache-dir output/live-research/cache
+      - name: Verify no sales/demand claims
+        run: |
+          python -c "import json; p=json.load(open('output/live-research/report.json')); assert p['no_automatic_go'] and all(x['decision']=='HOLD' and not x['verified_sales'] and not x['verified_demand'] for x in p['ideas'])"
+      - name: Publish research JSON even when a provider is unavailable
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ai-books-catalog-research
+          path: output/live-research/report.json
+          if-no-files-found: warn
+          retention-days: 14
