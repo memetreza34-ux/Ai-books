@@ -17,10 +17,12 @@ def main(argv: list[str] | None = None) -> int:
     sudoku.add_argument("--seed", type=int, default=20261022)
     sudoku.add_argument("--clues", type=int, default=38)
     sudoku.add_argument("--out", type=Path, default=Path("output/sudoku-test"))
+    sudoku.add_argument("--previews", action="store_true", help="Generate contact sheets for all pages (optional dependencies)")
     args = parser.parse_args(argv)
     try:
         if args.command == "sudoku":
-            report = build_sudoku(args.out, args.title, args.count, args.seed, args.clues)
+            report = build_sudoku(args.out, args.title, args.count, args.seed, args.clues,
+                                  previews=args.previews)
             print(json.dumps(report, ensure_ascii=False, indent=2))
             return 0
     except (ValueError, FileExistsError, AssertionError, RuntimeError, OSError) as exc:

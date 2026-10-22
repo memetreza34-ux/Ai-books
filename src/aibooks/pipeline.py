@@ -14,7 +14,8 @@ def file_hash(path: Path) -> str:
     return sha256(path.read_bytes()).hexdigest()
 
 
-def build_sudoku(out: Path, title: str, count: int, seed: int, clues: int) -> dict:
+def build_sudoku(out: Path, title: str, count: int, seed: int,
+                 clues: int, previews: bool = False) -> dict:
     if not title.strip() or len(title) > 90 or any(c in title for c in "\r\n"):
         raise ValueError("title must be a nonempty, single-line string <=90 chars")
     if not 20 <= count <= 150:
@@ -44,7 +45,7 @@ def build_sudoku(out: Path, title: str, count: int, seed: int, clues: int) -> di
         mb = page.mediabox
         if abs(float(mb.width) - PAGE_W) > 0.05 or abs(float(mb.height) - PAGE_H) > 0.05:
             raise AssertionError(f"Incorrect trim size on page {n}")
-    _ = PdfReader(cover, strict=True)  # raises if unreadable
+    _ = PdfReader(cover, strict=True)
     payload = [{
         "number": x["number"], "puzzle": x["puzzle"],
         "solution": x["solution"], "hash": x["hash"]
@@ -67,18 +68,23 @@ def build_sudoku(out: Path, title: str, count: int, seed: int, clues: int) -> di
                                   "rights/marketing review", "KDP full-wrap cover",
                                   "independent font embedding audit", "market validation"]
     }
-    (out / "quality-report.json").write_text(json.dumps(qa, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    quality_file = out / "quality-report.json"
+    quality_file.write_text(json.dumps(qa, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    files = [interior, cover, data_file, quality_file]
+    if previews:
+        from aibooks.preview import contact_sheets
+        files.extend(contact_sheets(interior, out / "previews"))
     manifest = {
         "project": "Ai-books", "version": "0.1.0",
         "product_type": "sudoku", "title": title, "language": "de",
         "count": count, "clues_per_puzzle": clues, "seed": seed,
         "status": "DRAFT", "sale_ready": False,
         "outputs": {
-            x.name: {"sha256": file_hash(x), "bytes": x.stat().st_size}
-            for x in [interior, cover, data_file, out / "quality-report.json"]
+            str(x.relative_to(out)): {"sha256": file_hash(x), "bytes": x.stat().st_size}
+            for x in files
         },
         "notes": "Cover is a front-only concept. NO automatic approval or KDP publishing."
     }
     (out / "manifest.json").write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     return {"output": str(out), "pages": pages, "puzzles": count,
-            "status": qa["status"], "files": sorted(p.name for p in out.iterdir())}
+            "status": qa["status"], "files": sorted(str(p.relative_to(out)) for p in files) + ["manifest.json"]}
