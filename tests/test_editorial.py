@@ -14,7 +14,11 @@ def test_custom_title_printed_interior_and_cover(tmp_path: Path):
     with pymupdf.open(str(folder / "interior-DRAFT.pdf")) as pdf:
         assert title in pdf[0].get_text("text")
     with pymupdf.open(str(folder / "cover-WRAP-DRAFT.pdf")) as pdf:
-        assert title in pdf[0].get_text("text")
+        page = pdf[0]
+        front = pymupdf.Rect(page.rect.width / 2, 0,
+                             page.rect.width, page.rect.height)
+        visible = " ".join(page.get_text("text", clip=front, sort=True).split())
+        assert title in visible
     qa = json.loads((folder / "quality-report.json").read_text(encoding="utf-8"))
     assert qa["editorial"]["content_consistency_passed"]
     assert qa["editorial"]["puzzle_headings_checked"] == 20

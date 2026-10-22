@@ -24,7 +24,12 @@ def audit_sudoku_text(interior: Path, cover: Path, title: str, count: int) -> di
             if len(outside) != 1:
                 errors.append("Cover PDF must have exactly one page")
             elif outside:
-                cover_text = outside[0].get_text("text", sort=True)
+                # Read the FRONT half only. Full-wrap page extraction interleaves
+                # back-cover text with two-line front titles when sorted by Y.
+                page = outside[0]
+                front = pymupdf.Rect(page.rect.width / 2, 0,
+                                     page.rect.width, page.rect.height)
+                cover_text = page.get_text("text", clip=front, sort=True)
 
         expected_title = _normalise(title)
         if not texts or expected_title not in _normalise(texts[0]):
