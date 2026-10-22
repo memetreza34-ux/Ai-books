@@ -3,8 +3,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from reportlab.lib.colors import HexColor
 from reportlab.pdfgen import canvas
-from reportlab.pdfbase import pdfmetrics
-from aibooks.layout import fonts, draw_grid
+from aibooks.layout import fonts, draw_grid, fitted_title_lines
 
 PT = 72.0
 TRIM_W, TRIM_H, BLEED = 8.5, 11.0, 0.125
@@ -38,15 +37,6 @@ def cover_geometry(page_count: int, paper: str = "white") -> CoverGeometry:
                          (TRIM_H + 2 * BLEED) * PT, back, spine_start, front)
 
 
-def _title_size(font: str, title: str) -> int:
-    size = 48
-    while pdfmetrics.stringWidth(title, font, size) > 500 and size > 18:
-        size -= 1
-    if pdfmetrics.stringWidth(title, font, size) > 500:
-        raise ValueError("Title too long for a readable cover")
-    return size
-
-
 def full_wrap_cover(path: Path, title: str, puzzles: list[dict],
                     page_count: int, paper: str = "white") -> CoverGeometry:
     if not puzzles:
@@ -72,11 +62,16 @@ def full_wrap_cover(path: Path, title: str, puzzles: list[dict],
     c.setFont(bold, 11)
     c.drawCentredString(centre, 704, "RÄTSELBUCH  ·  9 × 9")
     c.setFillColor(pale)
-    c.setFont(bold, _title_size(bold, title))
-    c.drawCentredString(centre, 625, title)
+    title_size, title_lines = fitted_title_lines(
+        title, bold, max_width=500, max_size=48, min_size=20
+    )
+    c.setFont(bold, title_size)
+    baseline = 627 if len(title_lines) == 1 else 654
+    for index, line in enumerate(title_lines):
+        c.drawCentredString(centre, baseline - index * (title_size * 1.18), line)
     c.setFillColor(secondary)
     c.setFont(regular, 18)
-    c.drawCentredString(centre, 591, "KONZENTRATION. LOGIK. RÄTSELSPASS.")
+    c.drawCentredString(centre, 575, "KONZENTRATION. LOGIK. RÄTSELSPASS.")
     c.setFillColor(pale)
     c.roundRect(fx + 96, 211, 420, 347, 16, stroke=0, fill=1)
     draw_grid(c, puzzles[0]["puzzle"], fx + 166, 247, 280, regular, 16)

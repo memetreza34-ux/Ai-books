@@ -25,6 +25,34 @@ def fonts() -> tuple[str, str]:
     return "AiVera", "AiVeraBold"
 
 
+
+def fitted_title_lines(title: str, font: str, max_width: float,
+                       max_size: int, min_size: int = 20) -> tuple[int, list[str]]:
+    """Fit a title into at most two centred lines, without breaking words."""
+    words = title.split()
+    if not words:
+        raise ValueError("Title cannot be blank")
+    for size in range(max_size, min_size - 1, -1):
+        lines: list[str] = []
+        current = ""
+        for word in words:
+            candidate = f"{current} {word}".strip()
+            if pdfmetrics.stringWidth(candidate, font, size) <= max_width:
+                current = candidate
+            else:
+                if not current:
+                    break
+                lines.append(current)
+                current = word
+        else:
+            if current:
+                lines.append(current)
+            if len(lines) <= 2 and all(
+                pdfmetrics.stringWidth(line, font, size) <= max_width for line in lines
+            ):
+                return size, lines
+    raise ValueError("Title too long for a readable two-line cover or title page")
+
 def heading(c: canvas.Canvas, text: str, page: int, regular: str, bold: str) -> None:
     c.setFillColor(INK)
     c.setFont(bold, 19)
@@ -68,14 +96,13 @@ def interior_pdf(path: Path, title: str, items: list[dict]) -> int:
     # 1: Title
     c.setFillColor(INK)
     # The printed title must match the manifest and wraparound cover.
-    max_width = PAGE_W - 112
-    title_size = 33
-    while title_size > 15 and pdfmetrics.stringWidth(title, bold, title_size) > max_width:
-        title_size -= 1
-    if pdfmetrics.stringWidth(title, bold, title_size) > max_width:
-        raise ValueError("Title too long for the interior title page")
+    title_size, title_lines = fitted_title_lines(
+        title, bold, PAGE_W - 112, max_size=33, min_size=20
+    )
     c.setFont(bold, title_size)
-    c.drawCentredString(PAGE_W / 2, 510, title)
+    first_y = 510 if len(title_lines) == 1 else 540
+    for index, line in enumerate(title_lines):
+        c.drawCentredString(PAGE_W / 2, first_y - index * (title_size * 1.35), line)
     c.setFont(regular, 15)
     c.drawCentredString(PAGE_W / 2, 466, "Sudoku-Rätselbuch · interne Testausgabe")
     c.setFont(regular, 11)
