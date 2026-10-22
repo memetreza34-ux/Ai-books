@@ -31,3 +31,10 @@ Import echter Verkaufsberichte, Deckungsbeiträge, Lager/Versionen, Preis-/Cover
 - Echte Nachfrage-/Konkurrenz-**Recherche**, visuelle Qualitätsabnahme, KDP-Vorlage/Previewer und Probedruck.
 - Buchgestaltung bis real verkaufsreife Qualität, Copywriting/Metadaten/Marke.
 - Zusätzliche Generatoren und echte Multi-Agent-Anbindung.
+
+## Visuelle Kontrolle und Evidenz (Fortschritt 22.10.2026)
+- Alte PDF stichprobenartig visuell geprüft; Titelmismatch und leere letzte Notizseite korrigiert.
+- PDF-Textabgleich als verbindliches technisches Gate, längere Titel zweizeilig.
+- Aktuelle Sudoku-Konkurrenzangebote aus Thalia/Hugendubel dokumentiert; **kommerzieller Status HOLD**.
+- Researcher-Runbook ergänzt; echte autonome Webrecherche weiterhin NICHT implementiert.
+- Nächste Abnahme: neues Artefakt optisch überprüfen, KDP-Vorlage/Previewer und echte Nachfrageindikatoren.

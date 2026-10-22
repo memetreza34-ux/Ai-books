@@ -26,3 +26,16 @@ ID / Datum / Buchtyp / Symptom / Schritte / Ursache / Schwere / Korrektur / Test
 - **Korrektur:** Fonts der tatsächlich gerenderten Text-Spans mit PyMuPDF ermitteln und deren eingebettete Font-Daten unabhängig prüfen.
 - **Regression:** Absichtlich tatsächlich mit Helvetica gezeichneter Text wird blockiert; korrekt eingebettete Vera-Zeichen passieren.
 - **Lehre:** QA-Checks brauchen Positiv- **und** Negativtests, um Scheinsperren und Scheinerfolge zu vermeiden.
+
+## 2026-10-22 – Reale Sichtprüfung fand PDF-Titelmismatch
+- **Symptom:** Variable Buchtitel erschienen auf dem Umschlag, im Innenteil nur fest eingebautes „SUDOKU“.
+- **Ursache:** Cover/Innenlayout nutzten unterschiedliche Titelquellen und die Maschine verglich nur Dateimaße.
+- **Fix:** Innen-Cover vereinheitlicht, lesbarer zweizeiliger Titelsatz, getrennte Frontcover-Extraktion (Textsortierung in kompletten Umschlägen verschachtelt Rück-/Fronttext).
+- **Regression:** Custom-Titel wird in beiden PDFs nachgewiesen; erwartete Anzahl Rätsel und Lösungsüberschriften automatisiert abgeglichen.
+- **Nebenbefund:** Die letzte Notizseite war ohne Schreiblinien; nun auf beiden Notizseiten Linien.
+- **Lehre:** Qualität ist nicht nur lesbare PDF, sondern inhaltliche und grafische Einheitlichkeit; automatische Positiv-/Negativtests erforderlich.
+
+## 2026-10-22 – Pflicht-Abhängigkeit falsch klassifiziert
+- **Symptom:** PDF-Prüfer und Editorialmodul verwenden PyMuPDF; Paket war nur im Preview-Extra gelistet.
+- **Fix:** PyMuPDF als erforderliche Abhängigkeit festgelegt; separater CI-Basisinstallations-Smoke-Test.
+- **Lehre:** CI muss nicht nur mit sämtlichen Extras, sondern auch mit dokumentierter Minimalinstallation laufen.

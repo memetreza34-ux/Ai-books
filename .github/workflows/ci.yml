@@ -27,3 +27,18 @@ jobs:
           path: output/github-sample/
           if-no-files-found: error
           retention-days: 14
+
+  base-install-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install base + tests only (no preview extra)
+        run: python -m pip install -e '.[dev]'
+      - name: Run an entire book without optional preview packages
+        run: python -m aibooks sudoku --title "Sudoku Basisinstallation" --count 20 --seed 20261022 --clues 40 --out output/minimal-install-smoke
+      - name: Verify content gate in base install
+        run: |
+          python -c "import json; p=json.load(open('output/minimal-install-smoke/quality-report.json')); assert p['editorial']['content_consistency_passed'] and p['preflight']['machine_preflight_passed']"
