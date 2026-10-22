@@ -31,3 +31,16 @@ def contact_sheets(source_pdf: Path, target_dir: Path) -> list[Path]:
             sheet.save(file, optimize=True)
             sheets.append(file)
     return sheets
+
+
+def cover_preview(pdf: Path, destination: Path) -> Path:
+    """Rasterize the single-page full-wrap PDF to a reviewable PNG."""
+    import pymupdf
+    from PIL import Image
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    with pymupdf.open(str(pdf)) as pages:
+        if len(pages) != 1:
+            raise ValueError("Cover preview expects exactly one cover page")
+        pix = pages[0].get_pixmap(matrix=pymupdf.Matrix(1.0, 1.0), alpha=False)
+        Image.frombytes("RGB", (pix.width, pix.height), pix.samples).save(destination, optimize=True)
+    return destination

@@ -1,7 +1,6 @@
-"""PDF interior and FRONT-ONLY cover concept; never claim KDP-ready."""
+"""Vector-based Sudoku interior draft layout with embedded font support."""
 from __future__ import annotations
 
-from math import ceil
 from pathlib import Path
 import reportlab
 from reportlab.pdfbase import pdfmetrics
@@ -68,10 +67,17 @@ def interior_pdf(path: Path, title: str, items: list[dict]) -> int:
 
     # 1: Title
     c.setFillColor(INK)
-    c.setFont(bold, 33)
-    c.drawCentredString(PAGE_W / 2, 510, "SUDOKU")
+    # The printed title must match the manifest and wraparound cover.
+    max_width = PAGE_W - 112
+    title_size = 33
+    while title_size > 15 and pdfmetrics.stringWidth(title, bold, title_size) > max_width:
+        title_size -= 1
+    if pdfmetrics.stringWidth(title, bold, title_size) > max_width:
+        raise ValueError("Title too long for the interior title page")
+    c.setFont(bold, title_size)
+    c.drawCentredString(PAGE_W / 2, 510, title)
     c.setFont(regular, 15)
-    c.drawCentredString(PAGE_W / 2, 466, "Rätselbuch – Testausgabe")
+    c.drawCentredString(PAGE_W / 2, 466, "Sudoku-Rätselbuch · interne Testausgabe")
     c.setFont(regular, 11)
     c.setFillColor(MUTED)
     c.drawCentredString(PAGE_W / 2, 415, f"{len(items)} geprüfte Rätsel mit Lösungen")
@@ -149,22 +155,3 @@ def interior_pdf(path: Path, title: str, items: list[dict]) -> int:
     return page
 
 
-def cover_concept_pdf(path: Path, title: str, example: tuple) -> None:
-    """Front-only concept; NOT a KDP full-wrap cover with spine/bleed."""
-    regular, bold = fonts()
-    c = canvas.Canvas(str(path), pagesize=(PAGE_W, PAGE_H), invariant=1)
-    c.setTitle(title + " - Front Cover CONCEPT ONLY")
-    c.setFillColor(INK)
-    c.rect(0, 0, PAGE_W, PAGE_H, stroke=0, fill=1)
-    c.setFillColor(HexColor("#E8F3FA"))
-    c.setFont(bold, 60)
-    c.drawCentredString(PAGE_W / 2, 650, "SUDOKU")
-    c.setFont(regular, 15)
-    c.drawCentredString(PAGE_W / 2, 608, "ZEIT FÜR KLARE GEDANKEN")
-    c.setFillColor(HexColor("#F4F8FC"))
-    c.roundRect(96, 202, 420, 365, 12, stroke=0, fill=1)
-    draw_grid(c, example, 175, 245, 260, regular, 14)
-    c.setFillColor(HexColor("#DAEAF4"))
-    c.setFont(bold, 12)
-    c.drawCentredString(PAGE_W / 2, 118, "COVERENTWURF · NICHT KDP-DRUCKFERTIG")
-    c.save()

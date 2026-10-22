@@ -9,6 +9,7 @@ from pypdf import PdfReader
 from aibooks.layout import PAGE_H, PAGE_W, interior_pdf
 from aibooks.cover import full_wrap_cover
 from aibooks.preflight import audit_pdfs
+from aibooks.editorial import audit_sudoku_text
 from aibooks.sudoku import is_valid_solution, make_book, solve
 
 
@@ -43,6 +44,9 @@ def build_sudoku(out: Path, title: str, count: int, seed: int,
     preflight = audit_pdfs(interior, cover, paper)
     if not preflight["machine_preflight_passed"]:
         raise AssertionError("Preflight blocked: " + "; ".join(preflight["problems"][:5]))
+    editorial = audit_sudoku_text(interior, cover, title, count)
+    if not editorial["content_consistency_passed"]:
+        raise AssertionError("Editorial check blocked: " + "; ".join(editorial["problems"][:5]))
     reader = PdfReader(interior, strict=True)
     if len(reader.pages) != pages or pages < 24 or pages % 2:
         raise AssertionError("Incorrect interior page count")
@@ -65,6 +69,7 @@ def build_sudoku(out: Path, title: str, count: int, seed: int,
         "cover_full_wrap_generated": True,
         "kdp_template_approved": False,
         "preflight": preflight,
+        "editorial": editorial,
         "puzzles": count, "unique_puzzles": count, "all_solutions_unique": True,
         "all_solutions_verified": True, "interior_pages": pages,
         "trim_inches": [8.5, 11], "bleed": False,
@@ -73,15 +78,17 @@ def build_sudoku(out: Path, title: str, count: int, seed: int,
         "spine_inches": round(geometry.spine_in, 6),
         "checks_performed": ["solution uniqueness", "duplicate hashes", "PDF parse",
                              "page count", "page dimensions", "full-wrap size",
-                             "used font embedding", "text safety margins"],
+                             "used font embedding", "text safety margins",
+                             "title and count consistency", "puzzle/solution heading parity"],
         "checks_still_required": preflight["still_required"]
     }
     quality_file = out / "quality-report.json"
     quality_file.write_text(json.dumps(qa, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     files = [interior, cover, data_file, quality_file]
     if previews:
-        from aibooks.preview import contact_sheets
+        from aibooks.preview import contact_sheets, cover_preview
         files.extend(contact_sheets(interior, out / "previews"))
+        files.append(cover_preview(cover, out / "previews" / "cover-full-wrap.png"))
     manifest = {
         "project": "Ai-books", "version": "0.1.0",
         "product_type": "sudoku", "title": title, "language": "de",
