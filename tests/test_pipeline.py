@@ -15,9 +15,12 @@ def test_first_book_produces_checked_draft(tmp_path: Path):
     manifest = json.loads((folder / "manifest.json").read_text())
     qa = json.loads((folder / "quality-report.json").read_text())
     assert manifest["sale_ready"] is False
-    assert qa["status"] == "MACHINE_VALIDATED_DRAFT"
+    assert qa["status"] == "MACHINE_PREFLIGHTED_DRAFT"
     assert qa["all_solutions_verified"] is True
-    assert qa["cover_full_wrap_ready"] is False
+    assert qa["cover_full_wrap_generated"] is True
+    assert qa["kdp_template_approved"] is False
+    assert qa["preflight"]["machine_preflight_passed"] is True
+    assert (folder / "cover-WRAP-DRAFT.pdf").exists()
 
 
 def test_existing_nonempty_output_is_not_overwritten(tmp_path: Path):

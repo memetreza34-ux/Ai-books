@@ -6,7 +6,9 @@ from pathlib import Path
 import json
 from pypdf import PdfReader
 
-from aibooks.layout import PAGE_H, PAGE_W, cover_concept_pdf, interior_pdf
+from aibooks.layout import PAGE_H, PAGE_W, interior_pdf
+from aibooks.cover import full_wrap_cover
+from aibooks.preflight import audit_pdfs
 from aibooks.sudoku import is_valid_solution, make_book, solve
 
 
@@ -15,7 +17,7 @@ def file_hash(path: Path) -> str:
 
 
 def build_sudoku(out: Path, title: str, count: int, seed: int,
-                 clues: int, previews: bool = False) -> dict:
+                 clues: int, previews: bool = False, paper: str = "white") -> dict:
     if not title.strip() or len(title) > 90 or any(c in title for c in "\r\n"):
         raise ValueError("title must be a nonempty, single-line string <=90 chars")
     if not 20 <= count <= 150:
@@ -35,9 +37,12 @@ def build_sudoku(out: Path, title: str, count: int, seed: int,
     if len(set(p["hash"] for p in puzzles)) != count:
         raise AssertionError("Duplicate puzzles")
     interior = out / "interior-DRAFT.pdf"
-    cover = out / "cover-CONCEPT-front-only.pdf"
+    cover = out / "cover-WRAP-DRAFT.pdf"
     pages = interior_pdf(interior, title, puzzles)
-    cover_concept_pdf(cover, title, puzzles[0]["puzzle"])
+    geometry = full_wrap_cover(cover, title, puzzles, pages, paper)
+    preflight = audit_pdfs(interior, cover, paper)
+    if not preflight["machine_preflight_passed"]:
+        raise AssertionError("Preflight blocked: " + "; ".join(preflight["problems"][:5]))
     reader = PdfReader(interior, strict=True)
     if len(reader.pages) != pages or pages < 24 or pages % 2:
         raise AssertionError("Incorrect interior page count")
@@ -53,20 +58,23 @@ def build_sudoku(out: Path, title: str, count: int, seed: int,
     data_file = out / "puzzles-and-solutions.json"
     data_file.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     qa = {
-        "status": "MACHINE_VALIDATED_DRAFT",
+        "status": "MACHINE_PREFLIGHTED_DRAFT",
         "human_approved": False,
         "kdp_previewer_verified": False,
         "printed_proof_approved": False,
-        "cover_full_wrap_ready": False,
+        "cover_full_wrap_generated": True,
+        "kdp_template_approved": False,
+        "preflight": preflight,
         "puzzles": count, "unique_puzzles": count, "all_solutions_unique": True,
         "all_solutions_verified": True, "interior_pages": pages,
         "trim_inches": [8.5, 11], "bleed": False,
-        "font_embedded_by_ttf_renderer": True,
+        "used_fonts_embedded": True,
+        "paper": paper,
+        "spine_inches": round(geometry.spine_in, 6),
         "checks_performed": ["solution uniqueness", "duplicate hashes", "PDF parse",
-                             "page count", "page dimensions"],
-        "checks_still_required": ["visual review every page", "exact KDP proof",
-                                  "rights/marketing review", "KDP full-wrap cover",
-                                  "independent font embedding audit", "market validation"]
+                             "page count", "page dimensions", "full-wrap size",
+                             "used font embedding", "text safety margins"],
+        "checks_still_required": preflight["still_required"]
     }
     quality_file = out / "quality-report.json"
     quality_file.write_text(json.dumps(qa, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
@@ -78,12 +86,13 @@ def build_sudoku(out: Path, title: str, count: int, seed: int,
         "project": "Ai-books", "version": "0.1.0",
         "product_type": "sudoku", "title": title, "language": "de",
         "count": count, "clues_per_puzzle": clues, "seed": seed,
+        "paper": paper, "spine_inches": round(geometry.spine_in, 6),
         "status": "DRAFT", "sale_ready": False,
         "outputs": {
             str(x.relative_to(out)): {"sha256": file_hash(x), "bytes": x.stat().st_size}
             for x in files
         },
-        "notes": "Cover is a front-only concept. NO automatic approval or KDP publishing."
+        "notes": "Full-wrap DRAFT, not KDP Previewer-approved. No automatic publication."
     }
     (out / "manifest.json").write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     return {"output": str(out), "pages": pages, "puzzles": count,
