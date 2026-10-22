@@ -1,29 +1,32 @@
 # Aktueller Projektstatus
 
-**Stand: 2026-10-22, nach erfolgreichem GitHub-Actions-Lauf #39727163909.**
+**Stand: 2026-10-22, nach GitHub-Actions-Lauf #39773293981.**
 
-## Funktioniert und auf GitHub überprüft
-- Vollständiger Agenten-Einstieg, Projekt-Gehirn und Qualitäts-/Risiko-Standards.
-- Python-CLI: `aibooks sudoku --count 28 --clues 38 --seed 20261022 --previews --out output/github-sample`.
-- Reproduzierbarer Sudoku-Generator, Prüflöser mit Eindeutigkeitsprüfung und Dublettencheck.
-- Seitenlayout und `interior-DRAFT.pdf`, `cover-CONCEPT-front-only.pdf`, Manifest und QA-Report.
-- Optionale Kontaktbögen aller Seiten mit Preview-Extra.
-- GitHub Actions: **8 Tests bestanden**, Beispielband gebaut und Artefakt hochgeladen.
-- Referenz-Buchlauf: **28 Rätsel, 40 Innenseiten**; technische Prüfungen grün.
+## Bestätigt und getestet
+- Projekt-Gehirn, `AGENTS.md`, genrebezogene Vorgaben für zehn Bucharten.
+- Sudoku-Generator mit mathematisch eindeutigen Lösungen und Dupplikatprüfung.
+- Innen-PDF und **echter vollständiger Umschlag** (Rückseite/Rücken/Vorderseite) als DRAFT.
+- Cover für B&W 8.5×11 Zoll auf **weißem und cremefarbenem Papier**, Cover-Beschnitt, Barcode-Freiraum, kein Rücken-Text.
+- Technische Vorprüfung: Seitenformate, Seitenzahl, tatsächliche Rückenbreite, Textabstände, verwendete eingebettete Schriften.
+- Negativtests: falsches Cover-Papierprofil und nicht eingebettete Schriften werden blockiert.
+- Kontaktbogen aller Seiten, QA-Report und Manifest mit Dateihashes.
+- Lokaler Evidenz-Bewertungsprozess `aibooks evaluate`: GO/HOLD-Alternativen ohne erfundene Umsatzzahlen; nur `CANDIDATE_FOR_HUMAN_REVIEW`, `HOLD`, `REJECT`.
+- GitHub CI: **17 Tests bestanden**, Testband mit **28 Rätseln, 40 Innenseiten** erzeugt und als Workflow-Artefakt hochgeladen.
 
-## Nicht als abgeschlossen melden
-- Cover ist **kein** KDP-Volldeckel mit Rücken/Beschnitt.
-- Keine menschliche Sichtprüfung aller PDF-Seiten, keine KDP-Preview, kein Probedruck.
-- Keine unabhängig dokumentierte Druckvorstufen-/Fontprüfung.
-- Kein realer Markttest, keine Verkaufs- oder Umsatzdaten.
-- Kein automatischer Nischen-Recherche-Agent, keine weiteren Generatoren, keine Agenten-API-Verbindung.
-- Keine geprüfte Veröffentlichung, keine Anzeigen, keine KDP-Anbindung.
+## Offene Punkte – keinesfalls als erledigt darstellen
+1. Keine reale Nachfrage/Marktstudie, keine verifizierten Verkäufe.
+2. Noch keine autonome Live-Recherche, KI-API-Integration oder Multi-Agent-Orchestrierung.
+3. Noch keine qualitätsgeprüften und implementierten Generatoren für weitere neun Bucharten.
+4. Kein menschlicher visueller Seitencheck des tatsächlichen GitHub-Artefakts und kein Probedruck.
+5. Kein Abgleich des Covers mit dem konkreten offiziellen KDP Cover Calculator Template, keine KDP-Preview und keine Amazon-Freigabe.
+6. Keine selbstständige Veröffentlichung, kein Werbekonto.
+7. Verlage/Pseudonyme/Mehrsprachigkeit/weitere Plattformen erst später.
 
-## Sofort nächste Schritte
-1. Kontaktbögen/PDF gemeinsam visuell prüfen; Layoutfehler beheben.
-2. Druckvorstufen-Prüfung und exaktes Cover nach gültigem offiziellen KDP-Template.
-3. Markt-Research-Modul mit dokumentierten Echtquellen und GO/HOLD/REJECT.
-4. Erstes verkaufsrelevantes Buch erst nach Markt- und Qualitätsfreigaben.
-5. Danach weitere Module, solange Nachfrage/Qualität belegbar.
+## Nächste Entwicklungsprioritäten
+1. Cover und alle Innen-Seiten nach Download des GitHub-Artefakts visuell kontrollieren und dokumentieren; konkretes Cover mit offizieller Vorlage vergleichen.
+2. Externe aktuelle Nachfrageinformationen **tatsächlich** erheben, Quellen lesen und `evaluate` mit geprüften Daten füttern.
+3. Ein kaufwürdiges Pilotbuch mit eigenständiger Marken- und Designqualität erstellen; nicht nur Testseiten.
+4. Weitere Generatoren nach belegtem Bedarf hinzufügen.
+5. Analyse realer Verkäufe, Verbesserungsprotokoll und sichere Skalierung.
 
-**Workflow-Link:** https://github.com/memetreza34-ux/Ai-books/actions/runs/39727163909
+**Letzter bestätigter CI-Lauf:** https://github.com/memetreza34-ux/Ai-books/actions/runs/39773293981

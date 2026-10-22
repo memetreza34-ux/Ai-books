@@ -20,3 +20,14 @@ Sprachvarianten mit lokaler Neuprüfung; Marken/Pseudonyme; Adapter für rechtli
 
 ## P6: Analytik und Verbesserung
 Import echter Verkaufsberichte, Deckungsbeiträge, Lager/Versionen, Preis-/Cover-Hypothesen, retrospektives Lernen. Werbeausgaben nur mit manueller Freigabe.
+
+
+### Erledigt am 2026-10-22 (technisch)
+- Sudoku-Referenzgenerator, 17 grüne Tests, 40-Seiten-Beispielbuch.
+- Full-Wrap-Cover als Entwurf für 8.5×11 B&W (weiß/creme), automatische PDF-Preflight-Gates.
+- Evidenzbasierte lokale Buchideen-Bewertung mit transparenten Quellenanforderungen und konservativer HOLD/REJECT/REVIEW-Logik.
+
+### Weiter offen
+- Echte Nachfrage-/Konkurrenz-**Recherche**, visuelle Qualitätsabnahme, KDP-Vorlage/Previewer und Probedruck.
+- Buchgestaltung bis real verkaufsreife Qualität, Copywriting/Metadaten/Marke.
+- Zusätzliche Generatoren und echte Multi-Agent-Anbindung.

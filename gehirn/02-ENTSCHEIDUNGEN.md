@@ -24,3 +24,9 @@ Die KI darf Vorschläge für Genres, Märkte, Sprachen, Altersgruppen, Formate, 
 - Zusätzliche Plattformen und Schnittstellen (später)
 - Werbung und Marketingbudget (später)
 - Verfügbarkeit verifizierbarer Verkaufs-/Keyword-Daten
+
+
+| D011 | 2026-10-22 | Print-Referenz 8.5×11 Zoll, B&W, weiß/creme; dynamisches Full-Wrap-Cover als DRAFT | Aktuelle KDP-Maße, kein Scheinkonformitätsanspruch |
+| D012 | 2026-10-22 | Maschinelle Font-/Seiten-/Textabstands-Prüfung als Gate | Druckfehler frühzeitig verhindern |
+| D013 | 2026-10-22 | Buchideen nur evidenzbasiert bewerten, niemals aus fehlenden Daten Verkäufe schätzen | Wirtschaftlichkeit und Qualität vor Massenproduktion |
+| D014 | 2026-10-22 | Automatischer Score kann nur menschliche Prüfung empfehlen | Mensch entscheidet Veröffentlichung und Ausgaben |
