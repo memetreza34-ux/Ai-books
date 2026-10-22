@@ -1,31 +1,29 @@
 # Aktueller Projektstatus
 
-Stand: 2026-10-22; fortlaufend nach jedem substantiellen Arbeitsschritt aktualisieren.
+**Stand: 2026-10-22, nach erfolgreichem GitHub-Actions-Lauf #39727163909.**
 
-## Ziel
-Verlässliche modulare Buchfabrik auf Basis des einzigen Repositories `Ai-books`.
+## Funktioniert und auf GitHub überprüft
+- Vollständiger Agenten-Einstieg, Projekt-Gehirn und Qualitäts-/Risiko-Standards.
+- Python-CLI: `aibooks sudoku --count 28 --clues 38 --seed 20261022 --previews --out output/github-sample`.
+- Reproduzierbarer Sudoku-Generator, Prüflöser mit Eindeutigkeitsprüfung und Dublettencheck.
+- Seitenlayout und `interior-DRAFT.pdf`, `cover-CONCEPT-front-only.pdf`, Manifest und QA-Report.
+- Optionale Kontaktbögen aller Seiten mit Preview-Extra.
+- GitHub Actions: **8 Tests bestanden**, Beispielband gebaut und Artefakt hochgeladen.
+- Referenz-Buchlauf: **28 Rätsel, 40 Innenseiten**; technische Prüfungen grün.
 
-## Bestätigt
-- Eigentümer-Prioritäten aus 55 Antworten dokumentiert.
-- Altprojekt nicht blind kopieren; neues Repository gezielt aufgebaut.
-- Erste referenzielle Buchart: Sudoku (technischer Test, nicht behauptete Marktsieger-Kategorie).
-- Vor erster realer Veröffentlichung alle relevanten Regeln live überprüfen.
+## Nicht als abgeschlossen melden
+- Cover ist **kein** KDP-Volldeckel mit Rücken/Beschnitt.
+- Keine menschliche Sichtprüfung aller PDF-Seiten, keine KDP-Preview, kein Probedruck.
+- Keine unabhängig dokumentierte Druckvorstufen-/Fontprüfung.
+- Kein realer Markttest, keine Verkaufs- oder Umsatzdaten.
+- Kein automatischer Nischen-Recherche-Agent, keine weiteren Generatoren, keine Agenten-API-Verbindung.
+- Keine geprüfte Veröffentlichung, keine Anzeigen, keine KDP-Anbindung.
 
-## Implementierung
-- Projektgedächtnis: im Aufbau.
-- CLI, Generator, Layout und Tests: im Aufbau, erst nach tatsächlicher Verifikation als funktionsfähig markieren.
-- Kein veröffentlichtes Buch, keine realen Marktdaten.
-- Keine realen Kauf-/KDP-Konten verbunden.
+## Sofort nächste Schritte
+1. Kontaktbögen/PDF gemeinsam visuell prüfen; Layoutfehler beheben.
+2. Druckvorstufen-Prüfung und exaktes Cover nach gültigem offiziellen KDP-Template.
+3. Markt-Research-Modul mit dokumentierten Echtquellen und GO/HOLD/REJECT.
+4. Erstes verkaufsrelevantes Buch erst nach Markt- und Qualitätsfreigaben.
+5. Danach weitere Module, solange Nachfrage/Qualität belegbar.
 
-## Akzeptanzkriterien Phase 1
-1. `python -m pytest` grün.
-2. Beispiel-Sudoku mit eindeutigen Lösungen und Duplikatkontrolle.
-3. Reproduzierbare Innen-PDF plus Maschinen-QA und Manifest.
-4. PDF-Maße, Seitenzahl und Schrifteinbettung prüfen.
-5. Menschliche Sichtprüfung bleibt offen; Ausgabe als DRAFT markieren.
-
-## Offene Risiken
-- Echte Marktnachfrage nicht validiert.
-- Regeln können sich ändern; keine automatische Rechtsgarantie.
-- Produktionsabhängigkeiten/Schriftdateien zwischen Macs verschieden.
-- Nutzungsrechte externer Assets kontrollieren.
+**Workflow-Link:** https://github.com/memetreza34-ux/Ai-books/actions/runs/39727163909

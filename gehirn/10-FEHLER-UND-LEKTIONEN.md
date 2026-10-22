@@ -1,18 +1,20 @@
 # Dauerhaftes Fehlergedächtnis
 
-Erfasse nur echte beobachtete Fehler, nicht frei erfundene Beispielvorfälle.
+Jeden beobachteten Fehler mit Datum, Ursache, Reproduktion, Fix und Regressionstest erfassen.
 
-## Schema je Eintrag
-- ID, Datum, betroffener Buchtyp und betroffene Version
-- Symptom, Reproduktionsschritte, Ursache, Schweregrad
-- Korrektur und zugehöriger Commit/Test
-- Neuer Regressionstest und Status
-- Übertragbarkeit auf andere Genres
+## Tatsächliche Beobachtung: 2026-10-22
+- **Codewarnung:** PyMuPDF meldete die Legacy-Schnittstelle `fitz` als veraltet.
+- **Maßnahme:** Vorschaumodul und Vorschau-Test auf `pymupdf` umstellen.
+- **Status:** Codeanpassung vorgesehen; CI-Lauf nach Änderung erneut prüfen.
+- **Regel:** Bibliotheks-Warnungen nicht verschweigen. Spätere Änderungen auf alte Kontaktbogenqualität regressionsprüfen.
 
-## Bekannte Vorsorgeregeln (keine Vorfälle)
-- KI behauptet eindeutiges Sudoku ohne Solver: durch algorithmischen Unique-Solution-Check verhindern.
-- Titel/Cover versprechen mehr Rätsel oder Seiten als enthalten: Manifest-PDF-Abgleich.
-- Übersetzung verändert Aufgaben: in Zielsprache erneut auf Lösbarkeit und Layout prüfen.
-- Schwarz-Weiß-Inhalt mit teuren Color-Settings: Druckprofil bewusst wählen.
-- Neue Bücher verwenden alte KDP-Regeln: live prüfen vor Freigabe.
-- Agenten löschen Kontext: AGENTS.md + Status + ADR verpflichtend.
+## Vorsorgeregeln, noch keine konkreten Vorfälle
+- Keine behauptete eindeutige Sudoku-Lösung ohne unabhängigen Prüflöser.
+- Cover-/Titelaussagen stimmen immer mit den echten enthaltenen Aufgaben überein.
+- Sprachversionen erneut auf Lösungen, Layout und Rechte prüfen.
+- Druckprofil bewusst nach Kosten/Qualität wählen.
+- Live-KDP-Regeln vor Veröffentlichung erneut prüfen.
+- AGENTS.md, Status und Entscheiderlog schützen Kontext vor Verlust.
+
+## Eintragsvorlage
+ID / Datum / Buchtyp / Symptom / Schritte / Ursache / Schwere / Korrektur / Test / Status.
