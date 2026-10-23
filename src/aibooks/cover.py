@@ -99,7 +99,9 @@ def _front_noir(c, g, puzzle, regular, bold, title, count):
     c.setFillColor(muted)
     c.drawCentredString(cx, 369, "EIN RÄTSEL PRO SEITE  ·  GEPRÜFTE LÖSUNGEN")
     # Smaller preview acknowledges Sudoku as a product, but typography is hero.
-    _draw_grid_card(c, cx - 76, 171, 152, puzzle, regular, "noir")
+    # A clean 9x9 motif: tiny printed numerals looked crowded at thumbnail size.
+    empty_motif = tuple((0,) * 9 for _ in range(9))
+    _draw_grid_card(c, cx - 76, 171, 152, empty_motif, regular, "noir")
     c.setFillColor(muted)
     c.setFont(regular, 10)
     c.drawCentredString(cx, 110, "9 × 9  /  GROSSZÜGIGES FORMAT")
