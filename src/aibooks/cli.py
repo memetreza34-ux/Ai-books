@@ -7,6 +7,7 @@ import sys
 from pathlib import Path
 
 from aibooks.pipeline import build_sudoku
+from aibooks.bookjob import build_from_spec
 from aibooks.opportunities import evaluate_file
 from aibooks.researcher import research_file
 from aibooks.market import evaluate_market_file
@@ -34,8 +35,17 @@ def main(argv: list[str] | None = None) -> int:
     market = commands.add_parser("market", help="Compare dated retailer price snapshots and print royalty scenarios; never predict sales")
     market.add_argument("--input", required=True, type=Path)
     market.add_argument("--out", required=True, type=Path)
+    book = commands.add_parser("book", help="Build a real-length book DRAFT from a versioned spec")
+    book.add_argument("--spec", required=True, type=Path)
+    book.add_argument("--out", required=True, type=Path)
+    book.add_argument("--previews", action="store_true")
     args = parser.parse_args(argv)
     try:
+        if args.command == "book":
+            print(json.dumps(build_from_spec(args.spec, args.out,
+                                             previews=args.previews),
+                             ensure_ascii=False, indent=2))
+            return 0
         if args.command == "market":
             report = evaluate_market_file(args.input, args.out)
             print(json.dumps({

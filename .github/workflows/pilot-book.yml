@@ -1,0 +1,63 @@
+name: Full-Length Editorial Pilot Book
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/pilot-book.yml
+      - src/aibooks/bookjob.py
+      - src/aibooks/layout.py
+      - src/aibooks/pipeline.py
+      - src/aibooks/editorial.py
+      - projects/pilot-grossdruck-sudoku-120-de/book-spec.json
+
+permissions:
+  contents: read
+
+jobs:
+  editorial-pilot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install
+        run: python -m pip install -e '.[dev,preview]'
+      - name: Test book contract and rendering
+        run: python -m pytest tests/test_bookjob.py tests/test_large_print.py
+      - name: Build complete draft, large solution pages and full cover
+        run: |
+          python -m aibooks book \
+            --spec projects/pilot-grossdruck-sudoku-120-de/book-spec.json \
+            --out output/pilot-grossdruck-120 \
+            --previews
+      - name: Verify complete draft remains unapproved and structurally complete
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          path = Path("output/pilot-grossdruck-120")
+          manifest = json.loads((path / "manifest.json").read_text())
+          quality = json.loads((path / "quality-report.json").read_text())
+          plan = json.loads((path / "production-plan-DRAFT.json").read_text())
+          assert manifest["count"] == 120
+          assert manifest["solutions_per_page"] == 2
+          assert manifest["sale_ready"] is False
+          assert manifest["market_status"] == "HOLD"
+          assert quality["editorial"]["content_consistency_passed"]
+          assert quality["preflight"]["machine_preflight_passed"]
+          assert quality["interior_pages"] == 184
+          assert plan["publishing_status"] == "NOT_APPROVED"
+          assert (path / "previews" / "cover-full-wrap.png").exists()
+          assert len(list((path / "previews").glob("contact-sheet-*.png"))) == 31
+          print("Draft approved by machine checks ONLY: 120 puzzles / 184 pages")
+          PY
+      - name: Upload full pilot PDFs, previews and audit package
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-books-pilot-120-large-print-DRAFT
+          path: output/pilot-grossdruck-120/
+          if-no-files-found: error
+          retention-days: 14

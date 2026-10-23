@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "project_id": "pilot-grossdruck-sudoku-120-de",
+  "product_type": "sudoku",
+  "title": "Sudoku im Großdruck",
+  "language": "de",
+  "audience": "Erwachsene, die ein großes 9x9-Raster und gut lesbare Sudoku-Lösungen bevorzugen.",
+  "positioning": "Großflächiges 9x9-Raster und nur zwei vergrößerte Lösungen je Seite. Hohe Prüfbarkeit statt irreführender Schwierigkeitseinstufung.",
+  "puzzles": 120,
+  "clues": 45,
+  "seed": 20261023,
+  "solutions_per_page": 2,
+  "paper": "white",
+  "proposed_net_list_price_eur": "12.99",
+  "difficulty_label": null,
+  "market_status": "HOLD",
+  "rights_status": "review_required",
+  "user_approved_to_publish": false,
+  "research_reference": "research/2026-10-23-retailer-market-de.md",
+  "project_goal": "Internal full-length editorial prototype; no listing or upload until market and legal gates pass."
+}
