@@ -59,3 +59,9 @@ ID / Datum / Buchtyp / Symptom / Schritte / Ursache / Schwere / Korrektur / Test
 - **Schutz:** Datenfeld `consumer_price_eur_including_vat` getrennt von `list_price_before_vat_eur`; alle Szenarien als hypothetisch markieren.
 - Händler-Rankings sind relative, zeitabhängige Plattformwerte und dürfen nicht in Monatsumsatz umgerechnet werden.
 - Eingeschränkte Domain-Allowlist, Nachweise höchstens 90 Tage alt, keine implizite URL-Live-Verifikation und keine Überschreibung alter Berichte.
+
+## 2026-10-23 – Markt-Modul Regressionstests / datentypische Fehler
+- **Beobachtung im ersten CI:** zwei Tests rot, weil Python-`Decimal` mit binärem `float` statt `Decimal` verglichen wurde und ein Feld-Schlüssel gegen das Dictionary selbst statt via Key abgefragt wurde.
+- **Korrektur:** Decimal-Vergleiche mit dezimalgenauen Literalen, korrektes Feld `consumer_price_eur_including_vat`; zusätzliche Mindestpreis-Regressionssperre gegen negativen Printkostenbeitrag.
+- **Nachweis:** [GitHub Actions #39896777677](https://github.com/memetreza34-ux/Ai-books/actions/runs/39896777677) erfolgreich, **46 Tests bestanden**, Base-Install ebenfalls.
+- **Lehre:** Finanztests keine binären Floating-Point-Vergleiche; für KDP-Druckrechnung Decimal + explizite Steuerbasis benutzen. Testfehler korrigieren, ohne das Verhalten schönzurechnen.

@@ -1,6 +1,6 @@
 # Aktueller Projektstatus
 
-**Stand: 2026-10-22; Vorhaben Live-Katalogrecherche implementiert, aktueller CI-Nachweis siehe Actions.**
+**Stand: 2026-10-23; letzter geprüfter Entwicklungsblock: Händlerpreis-Analyse und 46 grüne Tests.**
 
 ## Neu: Live-Katalogrecherche (Phase P3, Teil 1)
 - Offizielle Katalog-APIs Open Library + Apple Books, maximal drei Themen pro Lauf, Quellenzeitstempel, Hash, Cache, Drosselung und sicheres Fehlermanagement.
@@ -61,3 +61,11 @@
 - `engineering_readiness` ordnet nur technischen Pilotnutzen, **keine** Verkaufs-/Gewinnrangfolge. Alle drei kommerziell `HOLD`.
 - KDP-Kosten vom 23.10.2026: großes Schwarz-Weiß-Buch Amazon.de 24–110 Seiten 2,48 €, darüber 0,75 € + 0,016 €/Seite. 50/60-%-Tantiemen nach aktuellem KDP-Listenpreis. Dokumentation: [MARKET-REVIEW](../docs/MARKET-REVIEW.md).
 - Weiter **nicht erledigt:** unabhängige Nachfragemessung, automatisch lizenzierter Händler-API-Zugang, vollständige Rentabilitätsrechnung, fertiger Verkaufsband, Veröffentlichungsfreigabe.
+
+## Verifizierter Abschluss des Entwicklungsblocks 2026-10-23
+- Live-Katalog-Recherche (Open Library / Apple Books) bleibt von echtem Händler-Preisvergleich unterschieden.
+- [Händleranalyse mit 7 Produktbeobachtungen](../research/2026-10-23-retailer-market-de.md) und offizieller KDP-Druck-/Tantiemenmodellierung ergänzt.
+- CLI `aibooks market --input examples/retailer-observations-de.json --out output/market-review.json` funktioniert; Ergebnisse im CI-Testartefakt hinterlegt.
+- **46 Python-Tests grün, inklusive 14 neuer/erweiterter Markt-/Preisprüfungen**, zwei GitHub-Jobs erfolgreich. [Actions #39896777677](https://github.com/memetreza34-ux/Ai-books/actions/runs/39896777677).
+- **Kommerzieller Entscheid: HOLD für alle Kategorien; Sudoku bleibt nur technischer Referenz-Pilot.**
+- Weiter offen: selbstständige genehmigte Händlerdatenquellen ohne manuelle Quelleingabe, belastbare Nachfragemessung, echte Leserbefragung, publikationsfähige KDP-Datei, Volumen-/Designqualität und manuelle Freigaben.
