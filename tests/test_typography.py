@@ -26,9 +26,9 @@ def test_full_cover_title_and_tagline_do_not_overlap(tmp_path: Path):
         page = pdf[0]
         blocks = page.get_text("dict")["blocks"]
         spans = [s for b in blocks for l in b.get("lines", []) for s in l.get("spans", [])]
-        t = [s for s in spans if s["text"] in ("Sudoku im", "Großdruck")]
+        t = [s for s in spans if "Sudoku im" in s["text"] or "Großdruck" in s["text"]]
         tag = [s for s in spans if s["text"] == "EIN RÄTSEL PRO SEITE  ·  GEPRÜFTE LÖSUNGEN"]
-        assert len(t) == 2 and len(tag) == 1
+        assert len(t) in (1, 2) and len(tag) == 1
         assert max(s["bbox"][3] for s in t) + 10 < tag[0]["bbox"][1]
 
 

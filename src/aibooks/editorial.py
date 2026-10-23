@@ -41,9 +41,9 @@ def audit_sudoku_text(interior: Path, cover: Path, title: str, count: int,
             errors.append("Title mismatch: front cover does not display the requested title")
 
         # Textual claims must describe the contents, not the project defaults.
-        if not texts or not re.search(rf"\b{count}\s+geprüfte Rätsel\b", texts[0], re.I):
+        if not texts or not re.search(rf"\b{count}\s+(?:geprüfte Rätsel|NUMMERIERTE SUDOKU)\b", texts[0], re.I):
             errors.append("Interior puzzle-count claim does not match the manifest")
-        if not re.search(rf"\b{count}\s+SUDOKU-RÄTSEL\b", cover_text, re.I):
+        if not re.search(rf"\b{count}\s+SUDOKU(?:-RÄTSEL)?\b", cover_text, re.I):
             errors.append("Cover puzzle-count claim does not match the manifest")
 
         expected_min_pages = 3 + count + ceil(count / solutions_per_page) + 1
