@@ -14,6 +14,11 @@ aibooks book --spec projects/pilot-grossdruck-sudoku-120-de/book-spec.json --out
 
 Der Befehl erzeugt **das gesamte** Buch inklusive zwei größeren Lösungsfeldern je Seite, vollständigem Umschlagentwurf, Metadaten, Produktionsplan, QA-Report und Vorschauen. **Kein fertig veröffentlichbares KDP-Buch; kommerzieller Status HOLD.** 60 Tests erfolgreich.
 
+## Designsystem v1
+[Drei reproduzierbare Covervarianten und Regeln](docs/DESIGN-SYSTEM-v1.md) · [Design-Review](quality/2026-10-23-design-review.md).
+
+Die Varianten `editorial`, `blueprint` und `noir` entstehen **für denselben Buchinhalt**. Die Ausgabe enthält die drei vollständigen Umschläge, Einzelvorschauen und eine gemeinsame Vergleichsgrafik. Der ausgewählte KDP-Umschlag bleibt ein **DRAFT**, kein genehmigtes Verkaufscover.
+
 ## Bereits funktionierende Fähigkeiten
 - **Sudoku:** Reproduzierbare Rätsel, jeweils nachgerechnet und eindeutig lösbar, mit Duplikatkontrolle.
 - **Innen-PDF:** 8.5 × 11 Zoll, ohne Innen-Beschnitt, mit Lösungsseiten und optionalen Vorschauübersichten.

@@ -73,3 +73,10 @@ ID / Datum / Buchtyp / Symptom / Schritte / Ursache / Schwere / Korrektur / Test
 - **Lösung:** Cover-Zeilen umpositioniert (aktuell ca. 21 pt vertikaler Abstand), Lösungsraster auf 268 pt mit freiem Titelbereich und ausreichend Seitenzwischenraum gestaltet.
 - **Regressionstests:** `tests/test_typography.py` testet auf reale Textkoordinaten und Grid-Beschriftung; 60 Tests grün im CI.
 - **Weiterer Systembedarf:** Allgemeine grafische Kollisionsprüfung für *alle* Bucharten ergänzen; aktuelle Tests decken die neuen bekannten Konfliktarten ab, nicht sämtliche denkbaren Designfehler.
+
+## 2026-10-23 – Designprüfung zu stark auf PDF-Margins konzentriert
+- Der erste öffentliche 120-Rätsel-Band war technisch fehlerfrei, wirkte aber generisch – besonders dunkles Cover, Typografie und Produktionshinweise.
+- Maßnahmen: drei visuell vergleichbare Designrichtungen, reale Covers als PDF/PNG, Typo/Lesbarkeit, richtiger Inhalt statt dekorativen Fülltexten.
+- Korrektur am Inhalts-Gate: Zwei äquivalente erlaubte Textformulierungen für die Rätselanzahl werden erkannt; falsche Zahlen bleiben Blocker.
+- Der Vergleich enthüllte, dass Farbvarianten allein noch keine drei Coverkonzepte ergeben. Die Noir-Variante wurde typografisch neu aufgebaut.
+- Prävention: Render-basierte Designprüfung und strukturierter `cover-comparison.png`-Export; kein PUBLISHING_READY aus bloßem CI-Erfolg ableiten.

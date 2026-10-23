@@ -78,3 +78,10 @@
 - **Geschäftlich:** [Pilotentscheidung](../research/2026-10-23-pilot-sudoku-grossdruck.md) stützt nur technischen Start, kein Nachweis höheren Verkaufspotenzials gegenüber vielen Angeboten mit 200–420 Rätseln.
 - **Keine neue Freigabe:** Marktstatus HOLD, keine KDP/Ads, keine Marken-/Imprintfreigabe, kein finaler Veröffentlichungstext, kein Probedruck.
 - **Wichtigster nächster Block:** Nicht wahllos weitere Bucharten erzeugen, sondern diesen realen Entwurf systematisch qualitativ verbessern, Marktfeedback einholen, Schwierigkeit und strukturelle Sudoku-Originalität prüfen und KDP-Vorlagenvalidierung.
+
+## 23.10.2026 – Design-Reset für Sudoku (v1)
+- Neuer dreiteiliger Umschlag-Generator, `editorial` / `blueprint` / `noir`, mit verschiedenen Kompositionsprinzipien, kontrollierter Typografie und definierten Farbpaletten. Für jede Variante gültige KDP-Geometrie als **Entwurf**, keine KDP-Freigabe.
+- Innenlayout: typografisches Titelblatt, klare Zwischenüberschriften, präzisere Einführung und Nutzungserklärung, zurückhaltende Folios.
+- `aibooks book` erzeugt 3 separate Cover-PDFs, drei Vorschaubilder und eine Vergleichsgrafik, ohne die 120 Sudoku dreifach zu generieren.
+- Schrift, Geometrie, Zählung und Inhalt werden bei **jeder** Covervariante geprüft. Code/Tests/Review und bekannte Einschränkungen in [Designsystem](../docs/DESIGN-SYSTEM-v1.md) sowie [Designaudit](../quality/2026-10-23-design-review.md).
+- **Offen:** alle Seiten visuell abnehmen; tatsächlichen KDP-Cover-Calculator-Vergleich/Proof; Auswahl eines finalen Designs, Rechte-/Imprint-Prüfung und echte Zielgruppentests. Markt weiterhin HOLD.

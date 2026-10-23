@@ -10,3 +10,10 @@
 8. Bei fehlenden Live-Daten keine Marktnachfrage, Umsätze, Rechtskonformität oder KDP-Zulassung behaupten. Annahmen kennzeichnen; offene Prüfungen blockieren den Status PUBLISHING_READY.
 9. Build-Ergebnisse/Assets standardmäßig außerhalb von Git; nur Vorlagen, Testdaten und Code versionieren.
 10. Ausgabe an Nutzer: Erledigt / geprüft / offen / Risiken / nächster präziser Schritt; keine Scheinerfolge.
+
+## Zusätzliche Design- und Anti-Slop-Gates (23.10.2026)
+- **Vor jedem Coverprojekt** `docs/DESIGN-SYSTEM-v1.md` lesen und auf passende Genre-Regeln prüfen. Mindestens drei **kompositorisch unterschiedliche** Coverkonzepte liefern, nicht bloße Farbvarianten.
+- Layout immer als reale PDF-Vorschau rendern und per Stichproben/Thumbnail visuell prüfen; niemals durch reine CI-Pass-Aussage ersetzen.
+- Kein Erfinden eines Verlags-/Autorennamens, von Rezensionen, Schwierigkeit, Leserzielgruppen-Testergebnissen oder Premium-/Bestsellerversprechen.
+- Cover-/Titel-/Manifest-/Inhaltssystem müssen aus einer Quelle gespeist sein; Format/Schrift/Sicherheitsabstand in jedem Stil maschinell prüfen.
+- Kritisch erkannte Designfehler als dauerhafte Regressionstests absichern und im Fehlergedächtnis dokumentieren.

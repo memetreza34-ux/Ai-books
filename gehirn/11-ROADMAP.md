@@ -58,3 +58,9 @@ Import echter Verkaufsberichte, Deckungsbeiträge, Lager/Versionen, Preis-/Cover
 - Realer Vorschau-Rückkopplungsprozess: Cover-Textkollision und Lösungsraster-Abstand gefunden und mit neuen Regressionstests korrigiert.
 - Build [#39933627185](https://github.com/memetreza34-ux/Ai-books/actions/runs/39933627185) erfolgreich; zentrale Tests [#39933627153](https://github.com/memetreza34-ux/Ai-books/actions/runs/39933627153) **60 grün**.
 - Noch zu tun: volle visuelle Abnahme, räumliche Sudoku-Originalität (Isomorphie), Schwierigkeit, Nachfragevalidierung, KDP-Schablone/Proof, echten Titel/Autor auswählen und Eigentümerfreigabe.
+
+## 23.10.2026 – Design-Reset
+- Drei Coverkompositionen als wiederholbare Code-Designsysteme, verglichene PNGs/PDFs.
+- Sachlicher editorialer Innensatz mit weniger KI-Prototyp-Texten, alle Inhalte weiterhin reproduzierbar.
+- Manifest/pro Cover Variante KDP-Dimensionen und Schrifteinbettung; Benutzer muss finalen Cover-Stil auswählen.
+- Nächstes Designziel: echte Thumbnail-Tests, lesbare Papier-Probedrucke, stärkere visuelle Alleinstellungsmerkmale, systematische 184-Seiten-Sichtprüfung.

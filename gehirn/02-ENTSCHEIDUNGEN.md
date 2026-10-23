@@ -59,3 +59,9 @@ Die KI darf Vorschläge für Genres, Märkte, Sprachen, Altersgruppen, Formate, 
 - **Entscheidung:** Zwei anstelle von vier Lösungen je Seite für den Großdruck-Pilot; Text-/Raster-Abstände als konkrete testbare Bedingungen.
 - **Grund:** Druckbilder wurden tatsächlich angesehen; dicht stehende Lösungen widersprachen dem Großdruckversprechen.
 - **Folge:** 184 Seiten und damit höhere Druckkosten (KDP-Profil 3,694 € bei 184 Seiten); Szenariorechner berücksichtigt die reale Seitenzahl.
+
+### ADR D019 – 23.10.2026: Designsysteme statt zufälliger generativer Covers
+- Drei stilistisch eigenständige, deterministische Umschlagentwürfe mit gemeinsamer Buchtitel-/Rätselquelle.
+- Warum: billige, generische Bild- und Schriftgestaltung soll durch nachvollziehbare visuelle Entscheidungen ersetzt werden.
+- Innenlayout wurde typografisch vereinheitlicht; Layoutlogik ist nicht Teil des Sudoku-Solvers.
+- Alle Alternativen müssen in der gleichen Druckgröße getestet werden und `HOLD` / ENTWURF tragen; Entscheidung über Autor-/Imprintnamen und Veröffentlichung bleibt beim Eigentümer.
