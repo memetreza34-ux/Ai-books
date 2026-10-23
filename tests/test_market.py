@@ -1,7 +1,7 @@
 """Retail data quality, arithmetic and conservative market decision."""
 from datetime import date
-from copy import deepcopy
 import json
+from decimal import Decimal
 import pytest
 
 from aibooks.market import (
@@ -31,9 +31,9 @@ def test_real_snapshot_is_not_claimed_as_sales():
 
 
 def test_official_de_printing_rate_boundaries():
-    assert print_cost_de_bw_large(40) == 2.48
-    assert print_cost_de_bw_large(110) == 2.48
-    assert print_cost_de_bw_large(112) == 2.542
+    assert print_cost_de_bw_large(40) == Decimal("2.48")
+    assert print_cost_de_bw_large(110) == Decimal("2.48")
+    assert print_cost_de_bw_large(112) == Decimal("2.542")
     with pytest.raises(ValueError):
         print_cost_de_bw_large(23)
 
@@ -88,5 +88,10 @@ def test_sample_price_not_a_kdp_price():
     result = evaluate_market(fixture(), date(2026, 10, 23))
     offer = result["niches"][0]["retailer_observations"][0]
     scenario = result["niches"][0]["kdp_print_plan"]["illustrative_scenarios"][0]
-    assert "including_vat" in offer
-    assert "before_vat" in scenario
+    assert "consumer_price_eur_including_vat" in offer
+    assert "list_price_before_vat_eur" in scenario
+
+
+def test_kdp_print_cost_floor_blocked():
+    with pytest.raises(ValueError, match="print-cost"):
+        paperback_royalty_scenario(144, "4.96")

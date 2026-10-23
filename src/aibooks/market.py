@@ -73,6 +73,8 @@ def paperback_royalty_scenario(pages: int, net_list_price_eur: object) -> dict:
     royalty_rate = Decimal("0.60") if p >= Decimal("9.99") else Decimal("0.50")
     cost = print_cost_de_bw_large(pages)
     payout = royalty_rate * p - cost
+    if payout < 0:
+        raise ValueError("Scenario below estimated KDP print-cost recovery; increase list price")
     return {
         "list_price_before_vat_eur": _euros(p),
         "royalty_rate": _euros(royalty_rate),
