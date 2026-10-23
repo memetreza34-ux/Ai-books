@@ -80,3 +80,9 @@ ID / Datum / Buchtyp / Symptom / Schritte / Ursache / Schwere / Korrektur / Test
 - Korrektur am Inhalts-Gate: Zwei äquivalente erlaubte Textformulierungen für die Rätselanzahl werden erkannt; falsche Zahlen bleiben Blocker.
 - Der Vergleich enthüllte, dass Farbvarianten allein noch keine drei Coverkonzepte ergeben. Die Noir-Variante wurde typografisch neu aufgebaut.
 - Prävention: Render-basierte Designprüfung und strukturierter `cover-comparison.png`-Export; kein PUBLISHING_READY aus bloßem CI-Erfolg ableiten.
+
+## 2026-10-23 – Thumbnail-Audit: kleine Sudoku-Ziffern beim Noir-Cover unlesbar
+- Fehlermuster: PDF-Preflight vollständig grün, aber im `cover-comparison.png` sind die einzelnen Zahlen des 152-pt-Sudoku-Gitters optisch zu gedrängt.
+- Fix: Für die typografische Coverrichtung Noir bewusst **leeres Gittermotiv** statt eines scheinbar lesbaren Mini-Puzzles; echte Beispiele bleiben in den zwei anderen Entwürfen.
+- Regressionstest `test_noir_motif.py` liest ausschließlich den relevanten Gitterbereich – Zahlen aus `9 × 9`-Beschriftungen dürfen keinen Fehlalarm auslösen.
+- Langfristige Lehre: Motive müssen in Thumbnailgröße funktionieren; automatisierte Geometrieprüfungen ersetzen keine visuelle Abnahme.

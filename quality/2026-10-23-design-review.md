@@ -18,3 +18,10 @@
 
 ## Kein Qualitätsversprechen
 Ein attraktiveres Layout allein ist **kein** Beweis für Marktfit, Originalität, Premiumdruck oder gute Barrierefreiheit. Keine kommerzielle Freigabe. KDP-Cover-Calculator, Printproof, ungeprüfte Sudoku-Isomorphie, Zielgruppe und echte Nachfrage bleiben offene Blocker.
+
+## Finale gestalterische Nachkontrolle (23.10.2026)
+- Der nach der ersten Noir-Überarbeitung gerenderte `previews/cover-comparison.png`-Bogen zeigte auf dem **Noir-Cover unlesbar dichte Ziffern im kleinen Sudoku-Motiv**.
+- Die Noir-Miniatur wurde deshalb in ein absichtlich **leeres 9×9-Raster als reines, sauberes Gestaltungsmotiv** verwandelt. Editorial und Blueprint behalten ihre tatsächlichen Sudoku-Beispielraster.
+- Der finale korrigierte Vergleich wurde erneut als Bild visuell betrachtet: Editorial ist ruhig/hell; Blueprint technischer/dunkelblau; Noir typografisch mit großer `120` und sauberer kleiner Rastergrafik.
+- Gegenüber dem Ausgangsentwurf sind Titelblatt und Innensatz sichtbar klarer; die schwarzen Zahlen-/Rasterfelder bleiben bewusst schlicht und benutzbar.
+- Unabhängige Kundenpräferenz, Cover-A/B-Tests und alle Einzel-Seiten-Kontrollen wurden **nicht** durchgeführt.

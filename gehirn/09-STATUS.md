@@ -85,3 +85,8 @@
 - `aibooks book` erzeugt 3 separate Cover-PDFs, drei Vorschaubilder und eine Vergleichsgrafik, ohne die 120 Sudoku dreifach zu generieren.
 - Schrift, Geometrie, Zählung und Inhalt werden bei **jeder** Covervariante geprüft. Code/Tests/Review und bekannte Einschränkungen in [Designsystem](../docs/DESIGN-SYSTEM-v1.md) sowie [Designaudit](../quality/2026-10-23-design-review.md).
 - **Offen:** alle Seiten visuell abnehmen; tatsächlichen KDP-Cover-Calculator-Vergleich/Proof; Auswahl eines finalen Designs, Rechte-/Imprint-Prüfung und echte Zielgruppentests. Markt weiterhin HOLD.
+
+## Design-Reset nach visuellem Coververgleich
+- Noir-Cover nach zweiter Sichtung korrigiert: klein skaliertes Sudoku-Zahlenmotiv ersetzt durch abstraktes 9×9-Raster; das Layout ist jetzt eigenständig typografisch.
+- Gerenderter Vergleich unter `previews/cover-comparison.png`; die drei vollständigen Umschlag-PDFs liegen im Actions-Artefakt des 120-Sudoku-Piloten.
+- Abschluss erst nach grüner vollständiger CI der letzten Regression und erneutem PDF-Build; keine KDP-Freigabe.
