@@ -17,5 +17,7 @@
   "rights_status": "review_required",
   "user_approved_to_publish": false,
   "research_reference": "research/2026-10-23-retailer-market-de.md",
-  "project_goal": "Internal full-length editorial prototype; no listing or upload until market and legal gates pass."
+  "project_goal": "Internal full-length editorial prototype; no listing or upload until market and legal gates pass.",
+  "cover_style": "editorial",
+  "cover_variations": true
 }

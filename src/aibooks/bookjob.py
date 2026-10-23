@@ -10,6 +10,9 @@ from pathlib import Path
 import json
 
 from aibooks.pipeline import build_sudoku, file_hash
+from aibooks.cover import COVER_STYLES, full_wrap_cover
+from aibooks.editorial import audit_sudoku_text
+from aibooks.preflight import audit_pdfs
 from aibooks.market import paperback_royalty_scenario
 
 REQUIRED = {"schema_version", "project_id", "product_type", "title",
@@ -50,6 +53,10 @@ def read_book_spec(path: Path) -> dict:
         raise ValueError("solutions_per_page must be 2 or 4")
     if data["paper"] not in ("white", "cream"):
         raise ValueError("Invalid paper")
+    if data.get("cover_style", "editorial") not in COVER_STYLES:
+        raise ValueError("Invalid cover_style")
+    if not isinstance(data.get("cover_variations", True), bool):
+        raise ValueError("cover_variations must be boolean")
     if data["market_status"] not in ALLOWED_STATUS:
         raise ValueError("No commercial GO without separately approved workflow")
     if data["rights_status"] != "review_required":
@@ -73,10 +80,41 @@ def build_from_spec(spec_path: Path, out: Path, previews: bool = False) -> dict:
         out=out, title=book["title"], count=book["puzzles"],
         seed=book["seed"], clues=book["clues"],
         previews=previews, paper=book["paper"],
-        solutions_per_page=book["solutions_per_page"]
+        solutions_per_page=book["solutions_per_page"],
+        cover_style=book.get("cover_style", "editorial")
     )
     generated = json.loads((out / "manifest.json").read_text(encoding="utf-8"))
     count = book["puzzles"]
+    # Same checked content and spine dimensions for ALL three cover concepts.
+    # The selected cover is always cover-WRAP-DRAFT.pdf; alternatives are
+    # clearly marked concepts, not publication-ready replacements.
+    variant_report = {}
+    if book.get("cover_variations", True):
+        items = json.loads((out / "puzzles-and-solutions.json").read_text(encoding="utf-8"))
+        previews_dir = out / "previews"
+        for style in COVER_STYLES:
+            cover_file = out / f"cover-CONCEPT-{style}.pdf"
+            full_wrap_cover(cover_file, book["title"], items, product["pages"],
+                            book["paper"], style=style)
+            geometry_check = audit_pdfs(out / "interior-DRAFT.pdf", cover_file, book["paper"])
+            editorial_check = audit_sudoku_text(
+                out / "interior-DRAFT.pdf", cover_file,
+                book["title"], count, book["solutions_per_page"]
+            )
+            if not geometry_check["machine_preflight_passed"] or not editorial_check["content_consistency_passed"]:
+                raise AssertionError("Cover concept QA blocked: " + style)
+            result = {"style": style, "machine_preflight_passed": True,
+                      "editorial_checked": True, "publication_approved": False}
+            generated["outputs"][cover_file.name] = {
+                "sha256": file_hash(cover_file), "bytes": cover_file.stat().st_size
+            }
+            if previews:
+                from aibooks.preview import cover_preview
+                image_path = cover_preview(cover_file, previews_dir / f"cover-concept-{style}.png")
+                generated["outputs"][str(image_path.relative_to(out))] = {
+                    "sha256": file_hash(image_path), "bytes": image_path.stat().st_size
+                }
+            variant_report[style] = result
     description = (
         f"{count} nummerierte Sudoku-Rätsel im großzügigen 9×9-Raster "
         "mit einem Rätsel pro Seite. "
@@ -101,6 +139,8 @@ def build_from_spec(spec_path: Path, out: Path, previews: bool = False) -> dict:
     cost = paperback_royalty_scenario(product["pages"],
                                     book.get("proposed_net_list_price_eur", "12.99"))
     plan = {
+        "cover_design_study": {"selected_style": book.get("cover_style", "editorial"),
+                               "styles": variant_report, "requires_human_art_direction": True},
         "schema_version": 1,
         "project_id": book["project_id"],
         "generation_status": product["status"],
@@ -136,11 +176,15 @@ def build_from_spec(spec_path: Path, out: Path, previews: bool = False) -> dict:
     _json_file(checklist, plan)
     qa_file = out / "quality-report.json"
     qa = json.loads(qa_file.read_text(encoding="utf-8"))
+    qa["cover_concept_reviews"] = variant_report
+    qa["graphic_design_human_approved"] = False
     qa["market_evidence"] = "HOLD"
     qa["publication_approval"] = False
     qa["readability_review"] = "REQUIRED"
     qa["product_spec_id"] = book["project_id"]
     _json_file(qa_file, qa)
+    generated["cover_study"] = {"selected": book.get("cover_style", "editorial"),
+                                 "options": list(variant_report)}
     generated["product_spec_id"] = book["project_id"]
     generated["product_spec_sha256"] = sha256(spec_path.read_bytes()).hexdigest()
     generated["market_status"] = book["market_status"]

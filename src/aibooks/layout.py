@@ -55,13 +55,18 @@ def fitted_title_lines(title: str, font: str, max_width: float,
 
 def heading(c: canvas.Canvas, text: str, page: int, regular: str, bold: str) -> None:
     c.setFillColor(INK)
-    c.setFont(bold, 19)
-    c.drawString(56, 731, text)
-    c.setStrokeColor(HexColor("#DDE5EC"))
+    c.setFillColor(ACCENT)
+    c.rect(56, 729, 5, 23, stroke=0, fill=1)
+    c.setFillColor(INK)
+    c.setFont(bold, 18)
+    c.drawString(72, 732, text)
+    c.setStrokeColor(HexColor("#CBD4D4"))
+    c.setLineWidth(0.7)
     c.line(56, 714, PAGE_W - 56, 714)
-    c.setFont(regular, 9)
+    c.setFont(regular, 8)
     c.setFillColor(MUTED)
-    c.drawCentredString(PAGE_W / 2, 34, f"{page}  ·  Ai-books Muster / Entwurf")
+    c.drawString(56, 39, "RÄTSEL  /  EDITION")
+    c.drawRightString(PAGE_W - 56, 39, f"{page:03}  ·  ENTWURF")
 
 
 def draw_grid(c: canvas.Canvas, grid: tuple, x: float, y: float,
@@ -111,22 +116,35 @@ def interior_pdf(path: Path, title: str, items: list[dict], solutions_per_page: 
     c.setAuthor("Ai-books Studio Prototype")
     page = 0
 
-    # 1: Title
+    # 1: Editorial title leaf. Keep content rights and final imprint unresolved.
+    c.setFillColor(ACCENT)
+    c.rect(64, 706, 80, 5, fill=1, stroke=0)
+    c.setFillColor(MUTED)
+    c.setFont(bold, 11)
+    c.drawString(64, 735, "SUDOKU  /  RÄTSEL-EDITION")
     c.setFillColor(INK)
-    # The printed title must match the manifest and wraparound cover.
     title_size, title_lines = fitted_title_lines(
-        title, bold, PAGE_W - 112, max_size=33, min_size=20
+        title, bold, PAGE_W - 128, max_size=34, min_size=20
     )
     c.setFont(bold, title_size)
-    first_y = 510 if len(title_lines) == 1 else 540
+    first_y = 573 if len(title_lines) == 1 else 605
     for index, line in enumerate(title_lines):
-        c.drawCentredString(PAGE_W / 2, first_y - index * (title_size * 1.35), line)
-    c.setFont(regular, 15)
-    c.drawCentredString(PAGE_W / 2, 466, "Sudoku-Rätselbuch · interne Testausgabe")
-    c.setFont(regular, 11)
+        c.drawString(64, first_y - index * (title_size * 1.38), line)
     c.setFillColor(MUTED)
-    c.drawCentredString(PAGE_W / 2, 415, f"{len(items)} geprüfte Rätsel mit Lösungen")
-    c.drawCentredString(PAGE_W / 2, 140, "Studio-Prototyp · Kein kommerzielles Endprodukt")
+    c.setFont(regular, 13)
+    c.drawString(64, 490, "Ein großzügiges Raster. Ein Rätsel pro Seite.")
+    c.setStrokeColor(HexColor("#CFD9D8"))
+    c.setLineWidth(1)
+    c.line(64, 455, PAGE_W - 64, 455)
+    c.setFillColor(ACCENT)
+    c.setFont(bold, 61)
+    c.drawString(61, 341, str(len(items)))
+    c.setFillColor(INK)
+    c.setFont(regular, 13)
+    c.drawString(65, 307, "NUMMERIERTE SUDOKU MIT GEPRÜFTEN LÖSUNGEN")
+    c.setFillColor(MUTED)
+    c.setFont(regular, 9)
+    c.drawString(64, 123, "Interne Designstudie · Nicht zum Verkauf")
     page += 1
     page_done(c)
 
@@ -135,14 +153,15 @@ def interior_pdf(path: Path, title: str, items: list[dict], solutions_per_page: 
     heading(c, "Willkommen", page, regular, bold)
     c.setFont(regular, 12)
     for i, line in enumerate([
-        "Dieses Heft enthält automatisch erzeugte 9x9-Sudoku-Rätsel.",
-        "Jede Aufgabe besitzt nach technischer Prüfung genau eine Lösung.",
-        "Trage die Ziffern 1 bis 9 ein. In jeder Zeile, jeder Spalte",
-        "und jedem 3x3-Block darf jede Ziffer nur einmal vorkommen.",
-        "Die Lösungen findest du am Ende des Buches.",
-        "Die vorliegende PDF ist eine Musterausgabe zur Layoutprüfung.",
+        "Nimm dir einen Moment für dein nächstes Zahlenrätsel.",
+        f"Auf den folgenden Seiten warten {len(items)} klassische 9×9-Sudoku.",
+        "Jede Aufgabe steht auf einer eigenen, großzügigen Seite.",
+        "Die dazugehörigen Lösungen findest du gesammelt im zweiten Teil.",
+        "",
+        "Alle Rätsel wurden technisch auf genau eine Lösung geprüft.",
+        "Das Buch enthält keine geprüfte Schwierigkeits-Einstufung.",
     ]):
-        c.drawString(60, 650 - i * 28, line)
+        c.drawString(62, 650 - i * 32, line)
     page_done(c)
 
     # 3: Legend
@@ -150,15 +169,15 @@ def interior_pdf(path: Path, title: str, items: list[dict], solutions_per_page: 
     heading(c, "So nutzt du das Buch", page, regular, bold)
     c.setFont(regular, 12)
     for i, line in enumerate([
-        "1. Beginne mit einer Zeile, Spalte oder einem Block.",
-        "2. Notiere mögliche Ziffern, falls du nicht sicher bist.",
-        "3. Nutze nur logische Schlüsse, keine doppelten Ziffern.",
-        "4. Prüfe dein Ergebnis mit der passenden Lösungsnummer.",
-        "Die Rätsel sind nach Hinweisdichte einheitlich erzeugt.",
-        "Eine geprüfte individuelle Schwierigkeitsklassifizierung",
-        "wird in einer späteren Version ergänzt.",
+        "01  Jede Zeile enthält die Ziffern 1 bis 9 genau einmal.",
+        "02  Jede Spalte enthält die Ziffern 1 bis 9 genau einmal.",
+        "03  Jeder umrandete 3×3-Block enthält 1 bis 9 genau einmal.",
+        "04  Die vorgegebenen Zahlen dürfen nicht verändert werden.",
+        "05  Nutze die Lösungen erst, wenn du dein Rätsel geprüft hast.",
+        "",
+        "Tipp: Suche zunächst nach Zeilen mit wenigen freien Feldern.",
     ]):
-        c.drawString(60, 650 - i * 28, line)
+        c.drawString(62, 650 - i * 34, line)
     page_done(c)
 
     for item in items:
@@ -166,7 +185,7 @@ def interior_pdf(path: Path, title: str, items: list[dict], solutions_per_page: 
         heading(c, f"Rätsel {item['number']:03}", page, regular, bold)
         c.setFillColor(MUTED)
         c.setFont(regular, 11)
-        c.drawString(56, 688, "9 × 9  ·  Je Zeile, Spalte und Block 1–9")
+        c.drawString(56, 688, "9 × 9   /   EIN RÄTSEL PRO SEITE")
         draw_grid(c, item["puzzle"], x=90, y=171, size=432,
                   regular=regular, font_size=22)
         page_done(c)

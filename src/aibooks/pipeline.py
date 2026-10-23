@@ -19,7 +19,7 @@ def file_hash(path: Path) -> str:
 
 def build_sudoku(out: Path, title: str, count: int, seed: int,
                  clues: int, previews: bool = False, paper: str = "white",
-                 solutions_per_page: int = 4) -> dict:
+                 solutions_per_page: int = 4, cover_style: str = "editorial") -> dict:
     if not title.strip() or len(title) > 90 or any(c in title for c in "\r\n"):
         raise ValueError("title must be a nonempty, single-line string <=90 chars")
     if not 20 <= count <= 150:
@@ -28,6 +28,9 @@ def build_sudoku(out: Path, title: str, count: int, seed: int,
         raise ValueError("clues must be from 28 to 70")
     if solutions_per_page not in (2, 4):
         raise ValueError("solutions_per_page must be 2 or 4")
+    from aibooks.cover import COVER_STYLES
+    if cover_style not in COVER_STYLES:
+        raise ValueError("Unknown cover_style")
     if out.exists() and any(out.iterdir()):
         raise FileExistsError(f"Output folder must be empty: {out}")
     out.mkdir(parents=True, exist_ok=True)
@@ -43,7 +46,7 @@ def build_sudoku(out: Path, title: str, count: int, seed: int,
     interior = out / "interior-DRAFT.pdf"
     cover = out / "cover-WRAP-DRAFT.pdf"
     pages = interior_pdf(interior, title, puzzles, solutions_per_page)
-    geometry = full_wrap_cover(cover, title, puzzles, pages, paper)
+    geometry = full_wrap_cover(cover, title, puzzles, pages, paper, style=cover_style)
     preflight = audit_pdfs(interior, cover, paper)
     if not preflight["machine_preflight_passed"]:
         raise AssertionError("Preflight blocked: " + "; ".join(preflight["problems"][:5]))
@@ -78,7 +81,7 @@ def build_sudoku(out: Path, title: str, count: int, seed: int,
         "all_solutions_verified": True, "interior_pages": pages,
         "trim_inches": [8.5, 11], "bleed": False,
         "used_fonts_embedded": True,
-        "paper": paper,
+        "paper": paper, "cover_style": cover_style,
         "spine_inches": round(geometry.spine_in, 6),
         "checks_performed": ["solution uniqueness", "duplicate hashes", "PDF parse",
                              "page count", "page dimensions", "full-wrap size",
@@ -98,7 +101,8 @@ def build_sudoku(out: Path, title: str, count: int, seed: int,
         "product_type": "sudoku", "title": title, "language": "de",
         "count": count, "clues_per_puzzle": clues, "seed": seed,
         "solutions_per_page": solutions_per_page,
-        "paper": paper, "spine_inches": round(geometry.spine_in, 6),
+        "paper": paper, "cover_style": cover_style,
+        "spine_inches": round(geometry.spine_in, 6),
         "status": "DRAFT", "sale_ready": False,
         "outputs": {
             str(x.relative_to(out)): {"sha256": file_hash(x), "bytes": x.stat().st_size}
