@@ -86,7 +86,9 @@ def page_done(c: canvas.Canvas) -> None:
     c.showPage()
 
 
-def interior_pdf(path: Path, title: str, items: list[dict]) -> int:
+def interior_pdf(path: Path, title: str, items: list[dict], solutions_per_page: int = 4) -> int:
+    if solutions_per_page not in (2, 4):
+        raise ValueError('Only two or four solutions per page are supported')
     regular, bold = fonts()
     c = canvas.Canvas(str(path), pagesize=(PAGE_W, PAGE_H), invariant=1)
     c.setTitle(title + " - Innen-PDF ENTWURF")
@@ -153,18 +155,25 @@ def interior_pdf(path: Path, title: str, items: list[dict]) -> int:
                   regular=regular, font_size=22)
         page_done(c)
 
-    for start in range(0, len(items), 4):
+    for start in range(0, len(items), solutions_per_page):
         page += 1
         heading(c, "Lösungen", page, regular, bold)
-        for i, item in enumerate(items[start:start + 4]):
-            col, row = i % 2, i // 2
-            x = 77 + col * 255
-            y = 432 - row * 285
-            c.setFont(bold, 11)
+        for i, item in enumerate(items[start:start + solutions_per_page]):
+            if solutions_per_page == 2:
+                x, y, grid_size, label_y, label_x, label_size, number_size = (
+                    156, 388 - i * 314, 300, 388 - i * 314 + 307, 156, 13, 15
+                )
+            else:
+                col, row = i % 2, i // 2
+                x, y, grid_size, label_y, label_x, label_size, number_size = (
+                    77 + col * 255, 432 - row * 285, 190,
+                    432 - row * 285 + 204, 77 + col * 255, 11, 9.8
+                )
+            c.setFont(bold, label_size)
             c.setFillColor(ACCENT)
-            c.drawString(x, y + 204, f"Rätsel {item['number']:03}")
-            draw_grid(c, item["solution"], x=x, y=y, size=190,
-                      regular=regular, font_size=9.8)
+            c.drawString(label_x, label_y, f"Rätsel {item['number']:03}")
+            draw_grid(c, item["solution"], x=x, y=y, size=grid_size,
+                      regular=regular, font_size=number_size)
         page_done(c)
 
     page += 1

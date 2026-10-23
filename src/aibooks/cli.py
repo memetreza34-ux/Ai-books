@@ -21,6 +21,7 @@ def main(argv: list[str] | None = None) -> int:
     sudoku.add_argument("--seed", type=int, default=20261022)
     sudoku.add_argument("--clues", type=int, default=38)
     sudoku.add_argument("--paper", choices=("white", "cream"), default="white")
+    sudoku.add_argument("--solutions-per-page", type=int, choices=(2, 4), default=4)
     sudoku.add_argument("--out", type=Path, default=Path("output/sudoku-test"))
     sudoku.add_argument("--previews", action="store_true", help="Generate contact sheets for all pages (optional dependencies)")
     evaluation = commands.add_parser("evaluate", help="Score evidence files without live data or sales promises")
@@ -68,7 +69,8 @@ def main(argv: list[str] | None = None) -> int:
             return 0
         if args.command == "sudoku":
             report = build_sudoku(args.out, args.title, args.count, args.seed, args.clues,
-                                  previews=args.previews, paper=args.paper)
+                                  previews=args.previews, paper=args.paper,
+                                  solutions_per_page=args.solutions_per_page)
             print(json.dumps(report, ensure_ascii=False, indent=2))
             return 0
     except (ValueError, KeyError, FileExistsError, AssertionError, RuntimeError, OSError, json.JSONDecodeError) as exc:

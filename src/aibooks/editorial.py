@@ -15,7 +15,10 @@ def _normalise(text: str) -> str:
     return " ".join(text.split()).casefold()
 
 
-def audit_sudoku_text(interior: Path, cover: Path, title: str, count: int) -> dict:
+def audit_sudoku_text(interior: Path, cover: Path, title: str, count: int,
+                      solutions_per_page: int = 4) -> dict:
+    if solutions_per_page not in (2, 4):
+        raise ValueError('Invalid solutions_per_page')
     errors: list[str] = []
     with pymupdf.open(str(interior)) as pdf:
         texts = [page.get_text("text", sort=True) for page in pdf]
@@ -43,7 +46,7 @@ def audit_sudoku_text(interior: Path, cover: Path, title: str, count: int) -> di
         if not re.search(rf"\b{count}\s+SUDOKU-RÄTSEL\b", cover_text, re.I):
             errors.append("Cover puzzle-count claim does not match the manifest")
 
-        expected_min_pages = 3 + count + ceil(count / 4) + 1
+        expected_min_pages = 3 + count + ceil(count / solutions_per_page) + 1
         if len(texts) < expected_min_pages:
             errors.append("Missing puzzle, solution or notes pages")
 
@@ -56,7 +59,7 @@ def audit_sudoku_text(interior: Path, cover: Path, title: str, count: int) -> di
                 errors.append(f"Puzzle page {index + 1}: expected only Rätsel {expected_label}")
 
         solution_start = 3 + count
-        solution_end = solution_start + ceil(count / 4)
+        solution_end = solution_start + ceil(count / solutions_per_page)
         solution_numbers = []
         for page_text in texts[solution_start:solution_end]:
             solution_numbers.extend(re.findall(r"Rätsel\s+(\d{3})", page_text, re.I))
@@ -70,6 +73,7 @@ def audit_sudoku_text(interior: Path, cover: Path, title: str, count: int) -> di
         "content_consistency_passed": not errors,
         "requested_title": title,
         "expected_puzzles": count,
+        "solutions_per_page": solutions_per_page,
         "puzzle_headings_checked": len(puzzle_numbers),
         "solution_headings_checked": len(solution_numbers),
         "problems": errors,
