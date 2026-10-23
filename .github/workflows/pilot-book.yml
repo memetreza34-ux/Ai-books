@@ -9,6 +9,8 @@ on:
       - src/aibooks/layout.py
       - src/aibooks/pipeline.py
       - src/aibooks/editorial.py
+      - src/aibooks/cover.py
+      - src/aibooks/preview.py
       - projects/pilot-grossdruck-sudoku-120-de/book-spec.json
 
 permissions:
@@ -51,6 +53,11 @@ jobs:
           assert quality["interior_pages"] == 184
           assert plan["publishing_status"] == "NOT_APPROVED"
           assert (path / "previews" / "cover-full-wrap.png").exists()
+          assert (path / "previews" / "cover-comparison.png").exists()
+          for style in ("editorial", "blueprint", "noir"):
+              assert (path / f"cover-CONCEPT-{style}.pdf").exists()
+              assert (path / "previews" / f"cover-concept-{style}.png").exists()
+          assert len(manifest["cover_study"]["options"]) == 3
           assert len(list((path / "previews").glob("contact-sheet-*.png"))) == 31
           print("Draft approved by machine checks ONLY: 120 puzzles / 184 pages")
           PY

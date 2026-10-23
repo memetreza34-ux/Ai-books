@@ -73,6 +73,40 @@ def _draw_grid_card(c, x, y, side, puzzle, regular, style):
     draw_grid(c, puzzle, x, y, side, regular, 15.5)
 
 
+def _front_noir(c, g, puzzle, regular, bold, title, count):
+    """Type-led alternative, intentionally without the dominant Sudoku card."""
+    x = g.front_start_pt
+    cx = x + TRIM_W * PT / 2
+    ink = HexColor(STYLES["noir"]["ink"])
+    muted = HexColor(STYLES["noir"]["muted"])
+    accent = HexColor(STYLES["noir"]["accent"])
+    c.setStrokeColor(accent)
+    c.setLineWidth(1.5)
+    c.rect(x + 49, 143, 514, 586, fill=0, stroke=1)
+    c.setFillColor(muted)
+    c.setFont(bold, 11)
+    c.drawString(x + 68, 735, "DIE RÄTSEL-EDITION  /  01")
+    c.setFillColor(accent)
+    c.setFont(bold, 145)
+    c.drawCentredString(cx, 542, str(count))
+    c.setFillColor(ink)
+    size, lines = fitted_title_lines(title, bold, 485, 35, 21)
+    c.setFont(bold, size)
+    baseline = 450 if len(lines) == 1 else 473
+    for idx, line in enumerate(lines):
+        c.drawCentredString(cx, baseline - idx * size * 1.32, line)
+    c.setFont(regular, 12)
+    c.setFillColor(muted)
+    c.drawCentredString(cx, 369, "EIN RÄTSEL PRO SEITE  ·  GEPRÜFTE LÖSUNGEN")
+    # Smaller preview acknowledges Sudoku as a product, but typography is hero.
+    _draw_grid_card(c, cx - 76, 171, 152, puzzle, regular, "noir")
+    c.setFillColor(muted)
+    c.setFont(regular, 10)
+    c.drawCentredString(cx, 110, "9 × 9  /  GROSSZÜGIGES FORMAT")
+    c.setFont(bold, 7.5)
+    c.drawCentredString(cx, 55, "ENTWURF · NICHT ZUM VERKAUF")
+
+
 def _front_art(c, g, style, puzzle, regular, bold, title, count):
     s = STYLES[style]
     x = g.front_start_pt
@@ -185,7 +219,10 @@ def full_wrap_cover(path: Path, title: str, puzzles: list[dict],
            g.page_height_pt, stroke=0, fill=1)
 
     _back_art(c, g, style, len(puzzles), regular, bold)
-    _front_art(c, g, style, puzzles[0]["puzzle"], regular, bold, title, len(puzzles))
+    if style == "noir":
+        _front_noir(c, g, puzzles[0]["puzzle"], regular, bold, title, len(puzzles))
+    else:
+        _front_art(c, g, style, puzzles[0]["puzzle"], regular, bold, title, len(puzzles))
 
     # KDP auto-barcode: reserve white 2 x 1.2 inch box, lower-right back cover.
     bx = g.spine_start_pt - (2 + .375) * PT

@@ -44,3 +44,25 @@ def cover_preview(pdf: Path, destination: Path) -> Path:
         pix = pages[0].get_pixmap(matrix=pymupdf.Matrix(1.0, 1.0), alpha=False)
         Image.frombytes("RGB", (pix.width, pix.height), pix.samples).save(destination, optimize=True)
     return destination
+
+def cover_comparison(preview_files: dict[str, Path], output: Path) -> Path:
+    """Side-by-side cropped FRONT covers; original full-wrap PDFs stay untouched."""
+    from PIL import Image, ImageDraw
+    if set(preview_files) != {"editorial", "blueprint", "noir"}:
+        raise ValueError("Cover comparison needs all three styles")
+    width, height, label_height, pad = 408, 540, 52, 18
+    canvas = Image.new("RGB", (3 * width + 4 * pad, height + label_height + 2 * pad), "#E5E6E4")
+    brush = ImageDraw.Draw(canvas)
+    for index, name in enumerate(("editorial", "blueprint", "noir")):
+        with Image.open(preview_files[name]) as im:
+            image = im.convert("RGB")
+        # full-wrap front occupies slightly less than right half; take rightmost 48%.
+        x0 = round(image.width * 0.515)
+        front = image.crop((x0, 0, image.width, image.height))
+        front.thumbnail((width, height))
+        left = pad + index * (width + pad)
+        canvas.paste(front, (left, pad + label_height))
+        brush.text((left + 12, pad + 15), name.upper(), fill="#27333B")
+    output.parent.mkdir(parents=True, exist_ok=True)
+    canvas.save(output, optimize=True)
+    return output

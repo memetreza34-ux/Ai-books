@@ -89,6 +89,7 @@ def build_from_spec(spec_path: Path, out: Path, previews: bool = False) -> dict:
     # The selected cover is always cover-WRAP-DRAFT.pdf; alternatives are
     # clearly marked concepts, not publication-ready replacements.
     variant_report = {}
+    preview_concepts = {}
     if book.get("cover_variations", True):
         items = json.loads((out / "puzzles-and-solutions.json").read_text(encoding="utf-8"))
         previews_dir = out / "previews"
@@ -111,10 +112,17 @@ def build_from_spec(spec_path: Path, out: Path, previews: bool = False) -> dict:
             if previews:
                 from aibooks.preview import cover_preview
                 image_path = cover_preview(cover_file, previews_dir / f"cover-concept-{style}.png")
+                preview_concepts[style] = image_path
                 generated["outputs"][str(image_path.relative_to(out))] = {
                     "sha256": file_hash(image_path), "bytes": image_path.stat().st_size
                 }
             variant_report[style] = result
+        if previews and len(preview_concepts) == len(COVER_STYLES):
+            from aibooks.preview import cover_comparison
+            comparison = cover_comparison(preview_concepts, previews_dir / "cover-comparison.png")
+            generated["outputs"][str(comparison.relative_to(out))] = {
+                "sha256": file_hash(comparison), "bytes": comparison.stat().st_size
+            }
     description = (
         f"{count} nummerierte Sudoku-Rätsel im großzügigen 9×9-Raster "
         "mit einem Rätsel pro Seite. "
