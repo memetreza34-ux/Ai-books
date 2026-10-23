@@ -53,3 +53,9 @@ ID / Datum / Buchtyp / Symptom / Schritte / Ursache / Schwere / Korrektur / Test
 - Korrektur: Google Books durch die offizielle Apple Books Search API ersetzt; Schutzmechanismus stoppt Folgeanfragen nach HTTP 403/429.
 - Nachweis: Workflow #39813832909, beide neuen Katalogquellen antworteten erfolgreich.
 - Erkenntnis: Bibliografische Treffer sind keine Verkaufsmengen und keine Nachfrageindikatoren. Providerfehler dürfen nicht als 0 Marktangebot interpretiert werden.
+
+## Präventionsregel 2026-10-23 – Preisbeobachtung vs. KDP-Tantieme
+- **Risiko:** Vergleich von Händler-Endkundenpreisen inkl. MwSt. mit eigenem KDP-Netto-Listenpreis ohne Steuerumrechnung.
+- **Schutz:** Datenfeld `consumer_price_eur_including_vat` getrennt von `list_price_before_vat_eur`; alle Szenarien als hypothetisch markieren.
+- Händler-Rankings sind relative, zeitabhängige Plattformwerte und dürfen nicht in Monatsumsatz umgerechnet werden.
+- Eingeschränkte Domain-Allowlist, Nachweise höchstens 90 Tage alt, keine implizite URL-Live-Verifikation und keine Überschreibung alter Berichte.

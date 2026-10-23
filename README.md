@@ -11,6 +11,7 @@ Lies [AGENTS.md](AGENTS.md), [gehirn/00-START-HIER.md](gehirn/00-START-HIER.md) 
 - **Vollumschlag-PDF (Entwurf):** Rückseite + Buchrücken + Vorderseite mit KDP-Formel für weißes oder cremefarbenes Papier, Cover-Beschnitt und freigehaltenem Barcodebereich.
 - **Maschinelle Druckprüfung:** Seitengrößen, Seitenanzahl, tatsächliche Umschlagbreite, eingebettete verwendete Schriftarten und Text-Sicherheitsabstände.
 - **Live-Katalogrecherche:** Offizielle Open-Library- und Google-Books-APIs werden nur auf ausdrücklichen Befehl abgefragt; 3 Nischen, begrenzte Anfragen, Zeitstempel/Quell-URLs/Cache/Fehlerdiagnose. Liefert **keine Kaufzahlen und keine belegte Nachfrage**. [Anleitung](docs/LIVE-RESEARCH.md).
+- **Händlerstichprobe & KDP-Szenarien:** datierte Produktangebote aus Deutschland, inklusive Preis-/Seitenvergleich und offizieller Druckkostenformeln; keine erfundenen Verkäufe. [Anleitung](docs/MARKET-REVIEW.md).
 - **Ideenbewertung:** Gewichtet Nachfrage, Lesermehrwert, Originalität/Differenzierung, Evergreen, mögliche Marge und Umsetzbarkeit. Ohne aktuelle belegte Marktdaten bleibt eine Idee `HOLD`.
 - **Gehirn:** Ziele, Architektur, zehn Bucharten, rechtliche Kontrollpunkte, Entscheidungen, offene Risiken, Roadmap und Fehlergedächtnis.
 - **CI:** 17 Python-Tests plus reproduzierbarer Beispielbuchlauf; Test-PDFs in GitHub-Actions-Artefakten.
@@ -26,6 +27,7 @@ python -m pytest
 aibooks sudoku --title "Sudoku Testband" --count 28 --clues 38 --paper white --seed 20261022 --previews --out output/sudoku-test
 aibooks evaluate --input examples/opportunities-example.json --out output/research-example.json
 aibooks research --input examples/research-niches.json --out output/research-live.json
+aibooks market --input examples/retailer-observations-de.json --out output/market-review.json
 ```
 
 **Beachte:** `output/` ist in Git ignoriert. Bereits gefüllte Zielordner bzw. vorhandene Berichte werden nicht überschrieben.

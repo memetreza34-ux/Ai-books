@@ -34,3 +34,8 @@ Referenz: [Sudoku-Marktprüfung Oktober 2026](../research/2026-10-22-sudoku-de.m
 [Live-Recherche-Anleitung](LIVE-RESEARCH.md). GitHub Actions erlaubt manuelle Ausführung und speichert das Ergebnis als Artefakt. Kein Dauerbetrieb, keine ungefragten kostenpflichtigen APIs.
 
 **2026-10-22, Quellen-Fallback:** Google Books antwortete im ersten Live-Lauf mit HTTP 429; daher auf Apple Books Store Search API für E-Book-Wettbewerb umgestellt. Beide Plattformen sind für Verkäufe nur **indirekte** Anhaltspunkte. Keine ungeprüfte Druckpreis-Übernahme.
+
+## Händlerstichprobe und Produktions-Szenarien (23.10.2026)
+Zusätzlich existiert `aibooks market --input examples/retailer-observations-de.json --out output/market-review.json` als transparentes Offline-Analysemodul. Händlerdaten wurden am 23.10.2026 einzeln auf öffentlichen Produktseiten gelesen; sie werden **nicht** durch Python-Scraping gesammelt. `market` prüft Quellenfelder und vergleicht Druckkosten/Tantiemen, berechnet jedoch keine Nachfrage.
+
+Vor jeder Wiederverwendung muss der Agent URLs erneut öffnen und Preise/Seitenzahlen/Verfügbarkeit überprüfen. Datumsfelder nur bei echtem erneuten Aufruf aktualisieren – niemals blind das Datum hochsetzen. [Markt-Analyseanleitung](MARKET-REVIEW.md).

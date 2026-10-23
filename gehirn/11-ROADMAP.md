@@ -45,3 +45,9 @@ Import echter Verkaufsberichte, Deckungsbeiträge, Lager/Versionen, Preis-/Cover
 - Offen dokumentierte Einschränkungen: Keine Verkäufe, keine Suche nach tatsächlichen KDP-Händlerpreisen und keine Nachfragemetriken.
 - GitHub-Actions-Workflow als manuell startbare Recherche. Keine automatische tägliche Überwachung oder kostenpflichtige API.
 - Nächste P3-Stufe: unabhängig belastbare Nachfrageindizien, Händler- und Druckkostenbelege, echte qualitative Differenzierung sowie geprüfte Übergabe zum `evaluate`-Scorer.
+
+## Fortschritt 23.10.2026 – P3 Händlerpreise, Wirtschaftlichkeit
+- 7 datierte Produktangebote in 3 Nischen manuell anhand öffentlicher Händlerseiten gesichtet; strukturiert und mit externen URLs gespeichert.
+- Python-`market`-Analyse mit Preisvergleich und großformatigen KDP-Printszenarien umgesetzt, Quellen- und Risikogates inklusive Regressionstests.
+- Nächster P3-Block: belastbarere Nachfrageindikatoren und genuine Positionierung auf konkrete Zielgruppen.
+- Alles bis dahin bleibt `HOLD` für eine **kommerzielle** Produktauswahl.

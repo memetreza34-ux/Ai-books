@@ -20,6 +20,10 @@ jobs:
         run: |
           python -m aibooks evaluate --input examples/opportunities-example.json --out output/github-sample/opportunity-UNVERIFIED.json
           python -c "import json; p=json.load(open('output/github-sample/opportunity-UNVERIFIED.json')); assert p['recommendations'][0]['status']=='HOLD'"
+      - name: Evaluate dated retailer snapshots and conservative KDP scenarios
+        run: |
+          python -m aibooks market --input examples/retailer-observations-de.json --out output/github-sample/market-REVIEW.json
+          python -c "import json; r=json.load(open('output/github-sample/market-REVIEW.json')); assert r['all_niches_commercial_status']=='HOLD' and not r['sales_estimated'] and len(r['niches'])==3"
       - name: Upload sample draft and full-page previews
         uses: actions/upload-artifact@v4
         with:

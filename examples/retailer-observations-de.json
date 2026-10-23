@@ -1,0 +1,128 @@
+{
+  "schema_version": 1,
+  "niches": [
+    {
+      "id": "sudoku-grossdruck",
+      "name": "Sudoku Großdruck, deutsch",
+      "engineering_readiness": 9,
+      "print_plan": {
+        "format": "large_bw_white",
+        "pages": 144,
+        "net_list_prices_eur": [
+          9.99,
+          12.99,
+          15.99
+        ]
+      },
+      "offers": [
+        {
+          "title": "Sudoku Großdruck für Senioren leicht bis mittel, 200 Rätsel",
+          "consumer_price_eur": "12.90",
+          "pages": 144,
+          "url": "https://www.thalia.de/shop/home/artikeldetails/A1081911915",
+          "observed_on": "2026-10-23",
+          "source_method": "manually_read_public_product_page"
+        },
+        {
+          "title": "Sudoku Leicht – 365 Rätsel, Großdruck",
+          "consumer_price_eur": "19.99",
+          "pages": 240,
+          "url": "https://www.hugendubel.de/de/taschenbuch/k_d_thomas-sudoku_leicht_365_raetsel-52705806-produkt-details.html",
+          "observed_on": "2026-10-23",
+          "source_method": "manually_read_public_product_page"
+        },
+        {
+          "title": "Sudoku Großdruck Band 1, 192 Rätsel",
+          "consumer_price_eur": "3.99",
+          "pages": 224,
+          "url": "https://www.thalia.de/shop/home/artikeldetails/A1069945023",
+          "observed_on": "2026-10-23",
+          "source_method": "manually_read_public_product_page"
+        }
+      ],
+      "demand_evidence": []
+    },
+    {
+      "id": "mathe-grundschule",
+      "name": "Mathe-Übungsbuch Klasse 2, deutsch",
+      "engineering_readiness": 4,
+      "print_plan": {
+        "format": "large_bw_white",
+        "pages": 96,
+        "net_list_prices_eur": [
+          9.99,
+          11.99,
+          13.99
+        ]
+      },
+      "offers": [
+        {
+          "title": "Mathe üben. 2. Klasse",
+          "consumer_price_eur": "6.95",
+          "pages": 48,
+          "url": "https://www.thalia.de/shop/home/artikeldetails/A1078755140",
+          "observed_on": "2026-10-23",
+          "source_method": "manually_read_public_product_page"
+        },
+        {
+          "title": "Das Übungsheft Basiswissen Mathematik 2",
+          "consumer_price_eur": "8.90",
+          "pages": 64,
+          "url": "https://www.thalia.de/shop/home/artikeldetails/A1035225126",
+          "observed_on": "2026-10-23",
+          "source_method": "manually_read_public_product_page"
+        }
+      ],
+      "demand_evidence": [
+        {
+          "type": "retailer_rank_proxy",
+          "url": "https://www.thalia.de/shop/home/artikeldetails/A1035225126",
+          "rank": 952,
+          "observed_on": "2026-10-23",
+          "interpretation": "Thalia site-specific snapshot, not a sales count or comparable global rank"
+        }
+      ]
+    },
+    {
+      "id": "kinder-labyrinthe",
+      "name": "Labyrinthe/Beschäftigung für Kinder, deutsch",
+      "engineering_readiness": 2,
+      "print_plan": {
+        "format": "large_bw_white",
+        "pages": 96,
+        "net_list_prices_eur": [
+          9.99,
+          11.99,
+          13.99
+        ]
+      },
+      "offers": [
+        {
+          "title": "Der große Labyrinthe-Spaß: Durch den Wald",
+          "consumer_price_eur": "8.95",
+          "pages": 64,
+          "url": "https://www.thalia.de/shop/home/artikeldetails/A1074829632",
+          "observed_on": "2026-10-23",
+          "source_method": "manually_read_public_product_page"
+        },
+        {
+          "title": "Rätselblock ab 4 Jahre: Labyrinth und Knobelaufgaben",
+          "consumer_price_eur": "8.90",
+          "pages": 64,
+          "url": "https://www.hugendubel.de/de/taschenbuch/agnes_spiecker-raetselblock_ab_4_jahre-42380895-produkt-details.html",
+          "observed_on": "2026-10-23",
+          "source_method": "manually_read_public_product_page"
+        }
+      ],
+      "demand_evidence": [
+        {
+          "type": "retailer_rank_proxy",
+          "url": "https://www.thalia.de/shop/home/artikeldetails/A1074829632",
+          "rank": 43240,
+          "observed_on": "2026-10-23",
+          "interpretation": "Thalia site-specific snapshot, not a sales count or comparable global rank"
+        }
+      ]
+    }
+  ]
+}

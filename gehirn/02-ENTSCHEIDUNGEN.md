@@ -41,3 +41,9 @@ Die KI darf Vorschläge für Genres, Märkte, Sprachen, Altersgruppen, Formate, 
 - **Entscheidung:** Eigener `research`-Befehl mit zwei offiziell dokumentierten Katalog-APIs, drei Ideen pro Lauf, Quellnachweisen, Cache, Fehlersperren und strikt unverändertem `HOLD`.
 - **Nicht-Ziel:** Automatische Umsatz- oder Suchvolumenprognosen, Scraping von Shops, unbeaufsichtigte kostenpflichtige Recherchen.
 - **Folge:** Recherche-Lauf und Scorer bleiben getrennt, bis Nachfragebelege qualitätsgesichert sind.
+
+### ADR D016 – 23.10.2026: Keine Händler-Scraper; verifizierbare Snapshot-Importe
+- **Kontext:** Katalogtreffer zeigen keine realen Händlerpreise oder Verkäufe; offene Händlerseiten können wechselnde Regeln/Sperren besitzen.
+- **Entscheidung:** Echte öffentlich gelesene Händlerangebote mit Datum/Produktseiten-URL als explizit manuell erfasste Snapshot-Daten speichern; Python prüft Format und Plausibilität, nicht den Shop live.
+- **Kostenszenarien:** ausschließlich offizielle DE-KDP-Schwarz-Weiß-Großformat-Tarife zum dokumentierten Zeitpunkt, Netto-Listenpreis als separates Eingabefeld; keine Umsatzbehauptung.
+- **Folge:** Sudoku bleibt *technischer* Pilot, jedoch keine kommerzielle Siegerkategorie und keine Freigabe.

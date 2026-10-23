@@ -9,6 +9,7 @@ from pathlib import Path
 from aibooks.pipeline import build_sudoku
 from aibooks.opportunities import evaluate_file
 from aibooks.researcher import research_file
+from aibooks.market import evaluate_market_file
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -29,8 +30,25 @@ def main(argv: list[str] | None = None) -> int:
     research.add_argument("--input", required=True, type=Path)
     research.add_argument("--out", required=True, type=Path)
     research.add_argument("--cache-dir", type=Path, default=Path("output/catalog-cache"))
+    market = commands.add_parser("market", help="Compare dated retailer price snapshots and print royalty scenarios; never predict sales")
+    market.add_argument("--input", required=True, type=Path)
+    market.add_argument("--out", required=True, type=Path)
     args = parser.parse_args(argv)
     try:
+        if args.command == "market":
+            report = evaluate_market_file(args.input, args.out)
+            print(json.dumps({
+                "output": str(args.out),
+                "evaluated_on": report["as_of"],
+                "sales_estimated": report["sales_estimated"],
+                "commercial_best_niche_selected": report["commercial_best_niche_selected"],
+                "engineering_pilot_order": [
+                    {"id": x["id"], "status": x["commercial_decision"],
+                     "readiness": x["engineering_readiness"]}
+                    for x in report["niches"]
+                ]
+            }, ensure_ascii=False, indent=2))
+            return 0
         if args.command == "research":
             report = research_file(args.input, args.out, args.cache_dir,
                                    contact=os.getenv("AIBOOKS_CONTACT_EMAIL", ""))

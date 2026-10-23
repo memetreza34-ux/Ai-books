@@ -54,3 +54,10 @@
 - [Persistenter Kurzbericht](../research/2026-10-22-live-catalog-de.md) angelegt. Vollständiger Quellen-JSON-Bericht liegt im Workflow-Artefakt.
 - [CI #39813832724](https://github.com/memetreza34-ux/Ai-books/actions/runs/39813832724): **32 Tests bestanden**, Buchproduktion und minimale Installation ebenfalls erfolgreich.
 - Weitere Belege zu realer Nachfrage, Preisen und Buchqualität fehlen weiterhin. Kein GO.
+
+## 2026-10-23 – Händlerstichprobe und KDP-Kostenmodell
+- Echte Einzelangebote bei Thalia und Hugendubel für Sudoku, Grundschul-Mathe und Kinder-Labyrinthe geprüft, mit Produktlink, inkl.-MwSt.-Preis, Seitenzahl und Erfassungsdatum.
+- Neue CLI `aibooks market`: Eingabefelder/Quellen prüfen, Brutto-Händlerpreise vergleichen, KDP-Printszenarien mit explizit **netto** angesetzten eigenen Listenpreisen kalkulieren. Daten werden im Code nicht live nachgeladen.
+- `engineering_readiness` ordnet nur technischen Pilotnutzen, **keine** Verkaufs-/Gewinnrangfolge. Alle drei kommerziell `HOLD`.
+- KDP-Kosten vom 23.10.2026: großes Schwarz-Weiß-Buch Amazon.de 24–110 Seiten 2,48 €, darüber 0,75 € + 0,016 €/Seite. 50/60-%-Tantiemen nach aktuellem KDP-Listenpreis. Dokumentation: [MARKET-REVIEW](../docs/MARKET-REVIEW.md).
+- Weiter **nicht erledigt:** unabhängige Nachfragemessung, automatisch lizenzierter Händler-API-Zugang, vollständige Rentabilitätsrechnung, fertiger Verkaufsband, Veröffentlichungsfreigabe.
