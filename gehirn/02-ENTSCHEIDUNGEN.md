@@ -47,3 +47,15 @@ Die KI darf Vorschläge für Genres, Märkte, Sprachen, Altersgruppen, Formate, 
 - **Entscheidung:** Echte öffentlich gelesene Händlerangebote mit Datum/Produktseiten-URL als explizit manuell erfasste Snapshot-Daten speichern; Python prüft Format und Plausibilität, nicht den Shop live.
 - **Kostenszenarien:** ausschließlich offizielle DE-KDP-Schwarz-Weiß-Großformat-Tarife zum dokumentierten Zeitpunkt, Netto-Listenpreis als separates Eingabefeld; keine Umsatzbehauptung.
 - **Folge:** Sudoku bleibt *technischer* Pilot, jedoch keine kommerzielle Siegerkategorie und keine Freigabe.
+
+### ADR D017 – 23.10.2026: Erster vollständig simulierter Buchlauf statt endlosem Infrastrukturaufbau
+- **Entscheidung:** Ein reproduzierbarer, echter 120-Rätsel/184-Seiten-Großdruck-Sudoku-**Entwurf** wird aus `BookSpec` komplett mit Cover/PDF/QA/Metadaten/Provenienz erstellt.
+- **Begründung:** Anwender priorisiert fertige hochwertige Dateien und minimalen eigenen Aufwand; Sudoku ist technisch verifizierbar.
+- **Nicht behauptet:** Bestseller, höchste Nachfrage, rechtliche Sicherheit, KDP-Freigabe oder bewiesene Altersgerechtigkeit.
+- **Risiken:** Großdruck-Markt zeigt preiswerte Titel mit 200 bis 420 Aufgaben; nur 120 Rätsel bedürfen einer echten Differenzierung und Qualitätsprüfung.
+- **Gate:** `market_status: HOLD` und `rights_status: review_required` sind Pflicht im BookSpec und werden in den Ausgabedateien manifestiert.
+
+### ADR D018 – 23.10.2026: Großdruck auch für Lösungsseiten und konkret testbare Layoutabstände
+- **Entscheidung:** Zwei anstelle von vier Lösungen je Seite für den Großdruck-Pilot; Text-/Raster-Abstände als konkrete testbare Bedingungen.
+- **Grund:** Druckbilder wurden tatsächlich angesehen; dicht stehende Lösungen widersprachen dem Großdruckversprechen.
+- **Folge:** 184 Seiten und damit höhere Druckkosten (KDP-Profil 3,694 € bei 184 Seiten); Szenariorechner berücksichtigt die reale Seitenzahl.

@@ -65,3 +65,11 @@ ID / Datum / Buchtyp / Symptom / Schritte / Ursache / Schwere / Korrektur / Test
 - **Korrektur:** Decimal-Vergleiche mit dezimalgenauen Literalen, korrektes Feld `consumer_price_eur_including_vat`; zusätzliche Mindestpreis-Regressionssperre gegen negativen Printkostenbeitrag.
 - **Nachweis:** [GitHub Actions #39896777677](https://github.com/memetreza34-ux/Ai-books/actions/runs/39896777677) erfolgreich, **46 Tests bestanden**, Base-Install ebenfalls.
 - **Lehre:** Finanztests keine binären Floating-Point-Vergleiche; für KDP-Druckrechnung Decimal + explizite Steuerbasis benutzen. Testfehler korrigieren, ohne das Verhalten schönzurechnen.
+
+## 2026-10-23 – Reale Druckvorschau fand typografischen Konflikt
+- Ausgangsversion 120-Rätsel-Pilot hatte auf dem Full-Wrap-Cover eine Überlappung von ca. 2,85 pt zwischen zweiter Titelzeile und Untertitel.
+- Bei Lösungsseiten standen Beschriftungen ca. 4 pt vom Raster entfernt, visuell fast berührend.
+- **Ursache:** Der erste automatische Preflight kontrollierte nur Text-Ränder, nicht **Text-/Text- oder Text-/Illustrationskollisionen** innerhalb der sicheren Seite.
+- **Lösung:** Cover-Zeilen umpositioniert (aktuell ca. 21 pt vertikaler Abstand), Lösungsraster auf 268 pt mit freiem Titelbereich und ausreichend Seitenzwischenraum gestaltet.
+- **Regressionstests:** `tests/test_typography.py` testet auf reale Textkoordinaten und Grid-Beschriftung; 60 Tests grün im CI.
+- **Weiterer Systembedarf:** Allgemeine grafische Kollisionsprüfung für *alle* Bucharten ergänzen; aktuelle Tests decken die neuen bekannten Konfliktarten ab, nicht sämtliche denkbaren Designfehler.

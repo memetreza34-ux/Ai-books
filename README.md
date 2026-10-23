@@ -5,6 +5,15 @@
 ## Für KI-Agenten
 Lies [AGENTS.md](AGENTS.md), [gehirn/00-START-HIER.md](gehirn/00-START-HIER.md) und [gehirn/09-STATUS.md](gehirn/09-STATUS.md). Lade weitere Dokumente nur nach Bedarf, um Tokens zu sparen.
 
+## Erster vollständiger Buchentwurf (120 Sudoku / 184 Seiten)
+[Versionskontrollierter Buchauftrag](projects/pilot-grossdruck-sudoku-120-de/book-spec.json) · [Pilotziele](projects/pilot-grossdruck-sudoku-120-de/README.md) · [Qualitätskontrolle](quality/2026-10-23-sudoku-120-review.md) · [Buch-Pilot in GitHub Actions](https://github.com/memetreza34-ux/Ai-books/actions/workflows/pilot-book.yml).
+
+```bash
+aibooks book --spec projects/pilot-grossdruck-sudoku-120-de/book-spec.json --out output/pilot-grossdruck-120 --previews
+```
+
+Der Befehl erzeugt **das gesamte** Buch inklusive zwei größeren Lösungsfeldern je Seite, vollständigem Umschlagentwurf, Metadaten, Produktionsplan, QA-Report und Vorschauen. **Kein fertig veröffentlichbares KDP-Buch; kommerzieller Status HOLD.** 60 Tests erfolgreich.
+
 ## Bereits funktionierende Fähigkeiten
 - **Sudoku:** Reproduzierbare Rätsel, jeweils nachgerechnet und eindeutig lösbar, mit Duplikatkontrolle.
 - **Innen-PDF:** 8.5 × 11 Zoll, ohne Innen-Beschnitt, mit Lösungsseiten und optionalen Vorschauübersichten.

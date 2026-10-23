@@ -1,6 +1,6 @@
 # Aktueller Projektstatus
 
-**Stand: 2026-10-23; letzter geprüfter Entwicklungsblock: Händlerpreis-Analyse und 46 grüne Tests.**
+**Stand: 2026-10-23; erster vollständiger 120-Sudoku-Buchentwurf produziert. Kommerziell HOLD.**
 
 ## Neu: Live-Katalogrecherche (Phase P3, Teil 1)
 - Offizielle Katalog-APIs Open Library + Apple Books, maximal drei Themen pro Lauf, Quellenzeitstempel, Hash, Cache, Drosselung und sicheres Fehlermanagement.
@@ -69,3 +69,12 @@
 - **46 Python-Tests grün, inklusive 14 neuer/erweiterter Markt-/Preisprüfungen**, zwei GitHub-Jobs erfolgreich. [Actions #39896777677](https://github.com/memetreza34-ux/Ai-books/actions/runs/39896777677).
 - **Kommerzieller Entscheid: HOLD für alle Kategorien; Sudoku bleibt nur technischer Referenz-Pilot.**
 - Weiter offen: selbstständige genehmigte Händlerdatenquellen ohne manuelle Quelleingabe, belastbare Nachfragemessung, echte Leserbefragung, publikationsfähige KDP-Datei, Volumen-/Designqualität und manuelle Freigaben.
+
+## Erster vollständiger Buch-Produktionspilot (23.10.2026)
+- **Entwickelt:** versionskontrolliertes Briefing `projects/pilot-grossdruck-sudoku-120-de/book-spec.json` und neues CLI `aibooks book --spec ... --out ... --previews`.
+- **Fertig gebaut:** 120 einmalig lösbare Sudoku, 184 Innenseiten, 60 größere Lösungsseiten (2 Lösungen pro Seite), Großformat, Cover-Wrap als DRAFT, JSON-Inhalt, Manifest, QA-Bericht, Metadaten und Produktionsplan.
+- **Geprüfte CI:** [#39933627153](https://github.com/memetreza34-ux/Ai-books/actions/runs/39933627153) **60 Tests bestanden**; [vollständiger Buch-Build #39933627185](https://github.com/memetreza34-ux/Ai-books/actions/runs/39933627185) erfolgreich und als 14-Tage-Artefakt auf GitHub hochgeladen.
+- **Visuelle Teilprüfung:** finale Cover-Linien und Lösungsseiten abgenommen, ursprüngliche Kollisionen korrigiert; [Audit](../quality/2026-10-23-sudoku-120-review.md). Nicht jede Seite wurde einzeln durch Menschen kontrolliert.
+- **Geschäftlich:** [Pilotentscheidung](../research/2026-10-23-pilot-sudoku-grossdruck.md) stützt nur technischen Start, kein Nachweis höheren Verkaufspotenzials gegenüber vielen Angeboten mit 200–420 Rätseln.
+- **Keine neue Freigabe:** Marktstatus HOLD, keine KDP/Ads, keine Marken-/Imprintfreigabe, kein finaler Veröffentlichungstext, kein Probedruck.
+- **Wichtigster nächster Block:** Nicht wahllos weitere Bucharten erzeugen, sondern diesen realen Entwurf systematisch qualitativ verbessern, Marktfeedback einholen, Schwierigkeit und strukturelle Sudoku-Originalität prüfen und KDP-Vorlagenvalidierung.
