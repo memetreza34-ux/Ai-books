@@ -55,18 +55,18 @@ def full_wrap_cover(path: Path, title: str, puzzles: list[dict],
     c.setFillColor(mid)
     c.rect(fx, 0, g.page_width_pt - fx, g.page_height_pt, stroke=0, fill=1)
     c.setFillColor(blue)
-    c.rect(fx + 57, 731, 90, 5, stroke=0, fill=1)
+    c.rect(fx + 57, 754, 90, 5, stroke=0, fill=1)
 
     centre = fx + TRIM_W * PT / 2
     c.setFillColor(secondary)
     c.setFont(bold, 11)
-    c.drawCentredString(centre, 704, "RÄTSELBUCH  ·  9 × 9")
+    c.drawCentredString(centre, 733, "RÄTSELBUCH  ·  9 × 9")
     c.setFillColor(pale)
     title_size, title_lines = fitted_title_lines(
-        title, bold, max_width=500, max_size=48, min_size=20
+        title, bold, max_width=500, max_size=42, min_size=20
     )
     c.setFont(bold, title_size)
-    baseline = 627 if len(title_lines) == 1 else 654
+    baseline = 627 if len(title_lines) == 1 else 670
     for index, line in enumerate(title_lines):
         c.drawCentredString(centre, baseline - index * (title_size * 1.18), line)
     c.setFillColor(secondary)

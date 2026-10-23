@@ -86,6 +86,22 @@ def page_done(c: canvas.Canvas) -> None:
     c.showPage()
 
 
+def solution_layout(index: int, solutions_per_page: int) -> tuple:
+    """Layout contract in PDF points; gives labels sufficient visual breathing room."""
+    if solutions_per_page == 2:
+        if index not in (0, 1):
+            raise ValueError("Two-solution pages accept index 0 or 1")
+        x, y, side = 172, 385 - index * 313, 268
+        return x, y, side, y + side + 15, x, 13, 13
+    if solutions_per_page == 4:
+        if index not in (0, 1, 2, 3):
+            raise ValueError("Four-solution pages accept index 0..3")
+        col, row = index % 2, index // 2
+        x, y, side = 77 + col * 255, 432 - row * 285, 190
+        return x, y, side, y + side + 14, x, 11, 9.8
+    raise ValueError("Only 2 or 4 solutions per page supported")
+
+
 def interior_pdf(path: Path, title: str, items: list[dict], solutions_per_page: int = 4) -> int:
     if solutions_per_page not in (2, 4):
         raise ValueError('Only two or four solutions per page are supported')
@@ -159,16 +175,9 @@ def interior_pdf(path: Path, title: str, items: list[dict], solutions_per_page: 
         page += 1
         heading(c, "Lösungen", page, regular, bold)
         for i, item in enumerate(items[start:start + solutions_per_page]):
-            if solutions_per_page == 2:
-                x, y, grid_size, label_y, label_x, label_size, number_size = (
-                    156, 388 - i * 314, 300, 388 - i * 314 + 307, 156, 13, 15
-                )
-            else:
-                col, row = i % 2, i // 2
-                x, y, grid_size, label_y, label_x, label_size, number_size = (
-                    77 + col * 255, 432 - row * 285, 190,
-                    432 - row * 285 + 204, 77 + col * 255, 11, 9.8
-                )
+            x, y, grid_size, label_y, label_x, label_size, number_size = (
+                solution_layout(i, solutions_per_page)
+            )
             c.setFont(bold, label_size)
             c.setFillColor(ACCENT)
             c.drawString(label_x, label_y, f"Rätsel {item['number']:03}")
